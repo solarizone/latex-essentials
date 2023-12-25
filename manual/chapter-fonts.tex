@@ -1,0 +1,37 @@
+\documentclass[a4paper,titlepage]{ctexart}
+\usepackage{compositor}
+
+\newcommand\chapter{}
+\title{{\LaTeX} 字体}
+
+%\setmainfont{Arial}
+
+% input 搜索路径, 但是这个设置对 inputminted 不起作用
+% 因此在 inputminted 还有引用相对主文件的路径
+\makeatletter
+\def\input@path{{../snippets}}
+\makeatother 
+
+\makeindex[intoc]  % 创建索引
+
+\begin{document}
+
+% 设置顶部对齐，防止文字与图片混排时出现多余的空白
+% book 默认是两端对齐
+\raggedbottom 
+
+\maketitle
+
+\tableofcontents
+\cleardoublepage
+
+\input{../chapters/fonts.tex}
+
+\cleardoublepage
+\addtocontents{toc}{\bigskip}
+
+\bibliography{references}
+
+\printindex % 索引
+
+\end{document}

@@ -1,0 +1,121 @@
+\chapter{{\TeX} 的安装与配置}
+
+\section{{\TeX} 版本}
+
+{\TeX} 官方版本是 \href{http://www.tug.org/texlive}{{\TeX} Live}，还有各种发行版
+\footnote{中文的 CTEX 套装已不再更新。}: Windows 平台的 MiKTeX 和 macOS 平台的 MacTex。 
+后面几个版本不如官方版本稳定，推荐安装官方版本。
+
+\begin{itemize}
+\item{在 Debian 中安装 {\TeX} Live}
+
+不要使用 apt 安装，这个安装的是 Debian 社区维护的版本，使用 tlmgr 时会出现一些问题，
+不能自动连到最新的仓库会报错，如: Debian 10 对应的是 texlive 2018，
+而 \href{https://tug.org/}{TUG} 最新的仓库对应的是 texlive 2019。
+
+\item{在 macOS 中安装 {\TeX} Live}
+
+尽管 \href{https://tug.org/}{TUG} 推荐安装 MacTex，但是使用 install-tl 安装脚本可以保证与 Linux 安装一致。
+\end{itemize}
+
+\section{安装 {\TeX}}
+
+\subsection{下载安装脚本}
+
+官方主页：\url{https://www.ctan.org/}，国内镜像网站\footnote{北京交通大学镜像比清华大学镜像快。}：
+
+\begin{itemize}
+\item \url{https://mirror.bjtu.edu.cn/CTAN/systems/texlive/tlnet}
+\item \url{https://mirrors.aliyun.com/CTAN/systems/texlive/tlnet}
+\item \url{http://mirrors.cloud.tencent.com/CTAN/systems/texlive/tlnet}
+\end{itemize}
+
+国内从\href{https://mirror.bjtu.edu.cn/CTAN/systems/texlive/tlnet}{北京交通大学镜像}下载较快，
+下载其中的 install-tl.zip，并解压缩，该文件包含了各平台(Linux，macOS，Windows)的安装脚本。
+
+注意：不能只下载 install-tl 运行，否则出错：
+\begin{minted}{text}
+Can't locate TeXLive/TLUtils.pm in @INC (you may need to install the TeXLive::TLUtils module) (@INC contains: ./tlpkg /usr/local/Cellar/perl/5.32.1_1/lib/perl5/site_perl/5.32.1/darwin-thread-multi-2level /usr/local/Cellar/perl/5.32.1_1/lib/perl5/site_perl/5.32.1 /usr/local/Cellar/perl/5.32.1_1/lib/perl5/5.32.1/darwin-thread-multi-2level /usr/local/Cellar/perl/5.32.1_1/lib/perl5/5.32.1 /usr/local/lib/perl5/site_perl/5.32.1) at ./install-tl line 150.
+BEGIN failed--compilation aborted at ./install-tl line 154.
+\end{minted}
+
+使脚本成为可执行文件:
+
+\begin{minted}{bash}
+chmod +x install-tl
+\end{minted}
+
+\subsection{创建目录}
+
+\begin{minted}{bash}
+sudo mkidr /usr/local/texlive
+sudo chown USERNAME /usr/local/texlive
+\end{minted}
+
+\subsection{通过图形界面安装}
+
+运行 install-tl 脚本，为了避免 {\LaTeX} 在编译 tex 文件时报错而临时下载各种包，
+建议安装过程中选择完整安装 full scheme，占用磁盘空间约 8G。
+
+\begin{minted}{bash}
+./install-tl --repository https://mirror.bjtu.edu.cn/CTAN/systems/texlive/tlnet
+\end{minted}
+
+\subsection{通过命令行安装 }
+
+同样也可以通过命令行安装:
+
+\begin{minted}{bash}
+$ ./install-tl --no-gui --repository https://mirror.bjtu.edu.cn/CTAN/systems/texlive/tlnet
+\end{minted}
+
+\subsection{添加路径到 PATH}
+
+安装结束后将 {\TeX}  Live 命令行目录加到 PATH，macOS 修改 \url{~/.bash_profile}；
+Debian 修改 \url{/etc/profile} (对所有用户生效)：
+
+\begin{itemize}
+\item  2020 版 for macOS
+\mint{bash}|export PATH=/usr/local/texlive/2020/bin/x86_64-darwin:$PATH|
+
+\item 2021 版 for macOS(Apple 发布了 M1 处理器)
+\mint{bash}|export PATH=/usr/local/texlive/2021/bin/universal-darwin:$PATH|
+
+\item Debian
+\mint{bash}|export PATH=/usr/local/texlive/2021/bin/x86_64-linux:$PATH|
+\end{itemize}
+
+\section{CTAN 镜像使用帮助}
+
+CTAN (The Comprehensive TeX Archive Network) 镜像源可以使用 {\TeX} Live 管理器 tlmgr 更改。
+
+在命令行中执行:
+\mint{bash}|tlmgr option repository https://mirrors.tuna.tsinghua.edu.cn/CTAN/systems/texlive/tlnet|
+即可永久更改镜像源。
+
+如果只需要临时切换，可以用如下命令：
+\mint{bash}|tlmgr update --all --repository https://mirrors.tuna.tsinghua.edu.cn/CTAN/systems/texlive/tlnet|
+其中的 \mintinline{bash}|update --all| 指令可根据需要修改。
+
+\section{安装第三方宏包}
+
+以下为 macOS 上的操作：
+
+\begin{enumerate}
+\item 修改 TeX 搜索路径 
+
+修改\url{/usr/local/texlive/2021/texmf.cnf}设置文件, 下面这个值默认是注释掉的, 取消注释即可。
+
+\mint{latex}|TEXMFHOME = ~/Library/texmf|
+
+注意，字体搜索目录同样在这里设置。
+
+\item 将包拷贝到\url{~/Library/texmf/tex/latex/}
+
+\item 运行
+
+\begin{minted}{bash}
+texhash
+mktexlsr
+\end{minted}
+\end{enumerate}

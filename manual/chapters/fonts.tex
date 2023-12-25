@@ -1,0 +1,264 @@
+\chapter{字体}
+
+\newcommand{\sampletext}{世界自由、正义与和平的基础}
+
+{\LaTeX} 排版过程中要注意正确配置字体，否则会出现 \mintinline{text}{'Font not found!'} 错误。
+常见的错误主要是：不同平台的字体不一样，如 macOS 平台编译通过的文件在 Debian 平台就可能出现错误；
+或者字体所在目录不在搜索路径上
+\footnote{
+关于 {\LaTeX} 中西字体排版，请参考：在 {\LaTeX} 中使用 OpenType 字体系列：
+\href{https://stone-zeng.github.io/2018-08-08-use-opentype-fonts}{I}，
+\href{https://stone-zeng.github.io/2019-07-06-use-opentype-fonts-ii}{II}，
+\href{https://stone-zeng.github.io/2020-05-02-use-opentype-fonts-iii/}{III}。
+}。
+
+\section{字体的基本知识}
+
+\subsection{介绍}
+现代 TEX 引擎（包括 X⁠E⁠TEX、Lua­TEX 和 Ap­TEX）已经全面支持使用 OpenType 字体，因而可以很方便地实现类似 Microsoft Word、Adobe InDesign 等软件的效果。
+
+OpenType 字体格式由微软和 Adobe 联合开发，它有以下特点：
+
+\begin{itemize}
+  \item 字体编码基于 Unicode
+  \item 描述字体轮廓时，既可以用三次 Bézier 曲线（PostScript 轮廓），也可以用二次 Bézier 曲线（TrueType 轮廓）
+  \item 支持合字（也叫连字，ligature）、小型大写字母（small caps）、多种数字样式、上下标、上下文替换等高级字体排印功能，并可用于复杂语言排版
+  \item 在 Windows、macOS、Linux 等多种平台下均可使用
+\end{itemize}
+
+OpenType 字体的文件扩展名可为 .Ttf、.ttf、.ttc，它们的区别如下：
+
+\begin{itemize}
+  \item .Ttf：单个字体，使用 PostScript 轮廓
+  \item .ttf：单个字体，使用 TrueType 轮廓
+  \item .ttc：字体集合（TrueType/OpenType Collection），在单个文件中打包多个字体，允许使用 TrueType 或 PostScript 轮廓
+\end{itemize}
+
+LATEX 中使用 OpenType 字体，主要依靠下列宏包：
+
+\begin{itemize}
+  \item fontspec：通用字体选取
+  \item CTeX：LATEX 中文排版框架，依据引擎的不同，底层分别利用 xeCJK 宏包（X⁠E⁠TEX）和 luatexja 宏包（Lua­TEX）来处理
+  \item unicode-math：实验性的 Unicode 数学排版功能
+\end{itemize}
+
+考虑到 Ap­TEX 仍处于开发状态，尚未提供良好的用户接口，因此下文仅适用于 X⁠E⁠TEX 和 Lua­TEX 引擎。
+
+\subsection{字体的分类}
+
+大体上说，西文字体可以分为衬线体（serif font）和无衬线体（sans-serif font）两大类。
+
+\subsubsection{衬线体}
+
+所谓“衬线”，是指笔画末端的一种装饰细节，一般认为起源于古罗马的石刻拉丁字母。衬线据说有引导视线的作用，因而往往被用作书籍、文章等的正文字体。根据产生年代以及风格样式，又可以细分为几类。
+
+\subsubsection{无衬线体}
+
+顾名思义，无衬线体就是指没有衬线的字体，它在近现代才得到广泛的发展与运用。早些年，屏幕分辨率远达不到印刷质量，衬线等细节很难反映出来，因此无衬线体在屏幕、网页显示上大行其道。
+
+\subsubsection{等宽字体}
+
+等宽字体与比例字体相对，其中的所有字母、符号均有相同的宽度。严格来说，等宽字体并不能单独作为一个分类，但由于其用法比较特殊（现代主要用于计算机程序的排版），这里还是把它单独列出来。
+
+\subsubsection{变体}
+
+直立、正体的字型通常被称为罗马体（Roman type）。除此之外，一套完整的字体往往还具有若干其他字型。
+
+\begin{itemize}
+  \item 意大利体（italic type）：字形稍向右倾，笔画带有手写体的风格。它不是罗马体的简单倾斜
+  \item 斜体（oblique/slant type）：大部分是原字形的简单倾斜，少数设计精良的字体（如 Univers、Helvetica 等）也会再额外进行视觉修正
+  \item 字重（weight）：表示字体的粗细，除了常规体（regular），还有粗体（bold）、细体（light），以及半粗、半细、超粗、超细、特粗、特细等。现代字体也流行以数字区分不同字重，典型例子如 Univers
+  \item 小型大写（small caps）：顾名思义，形状是大写字母，但尺寸略小（一般接近小写字母）。西文中，全大写字母组成的单词（如 WHO）常用小型大写的形式
+\end{itemize}
+
+\subsection{中文字体}
+
+中文字体原则上应该与西文字体平行列出。但出于历史原因，现代可用的中文字体数量远小于西文字体，也更少有细致的分类方案。
+
+正文中常用的中文字体主要有宋、黑、楷、仿四种。括号中给出的是对应的日文名称
+\footnote{方正书宋简体不能正确显示这些日文名称，此处使用了 Noto Serif SC 字体。}。
+
+\begin{itemize}
+  \item 宋体（{\notoserifsc 明朝体}）：实际上诞生于明朝，因而也叫明体。特点是笔画硬朗、横细竖粗，笔画末端带有类似「衬线」的装饰三角形。宋体习惯用于正文排版，适合与衬线的西文字体搭配
+  \item 黑体（{\notoserifsc ゴシック体}）：笔画粗细变化较小，横竖对比也较小，常与无衬线西文字体搭配
+  \item 楷体（{\notoserifsc 楷書体}）：来源于传统书法，字形端庄，对应与西文字体中的手写体
+  \item 仿宋（{\notoserifsc 宋朝体}）：源自于宋朝的刻书字体，但实际成形于民国初年。特点是兼有宋体的结构与楷体的笔画，较为清秀挺拔
+\end{itemize}
+
+CTeX 宏默认的字库配置基于以下逻辑：
+
+\begin{itemize}
+  \item 宋体对应到 \mintinline{text}{\rmfamily} 的 \mintinline{text}{\upshape}
+  \item 黑体（或微软雅黑、苹方等现代黑体）对应到 \mintinline{text}{\sffamily} 的 \mintinline{text}{\upshape}
+  \item 楷体对应到 \mintinline{text}{\rmfamily} 的 \mintinline{text}{\itshape}
+  \item 仿宋对应到 \mintinline{text}{\ttfamily} 的 \mintinline{text}{\upshape}
+  \item 如果以上某种字体有相应的粗体，则将其对应到 \mintinline{text}{\bfseries}，如果没有则不做特殊处理；特别地，加粗宋体如果不存在的话，则会改用黑体（但不使用现代黑体）
+  \item 最后使用 \mintinline{text}{\setCJKfamilyfont} 命令定义额外的的字体命令，如 \mintinline{text}{\songti}、\mintinline{text}{\heiti} 等；此时如果有隶书和圆体，也会用同样方式定义字体命令
+\end{itemize}
+
+\section{下载和安装字体}
+
+texlive 自带的中文字体比较有限，如其自带 Fandol 楷体，该字库的“仓”误为“仑”，故不用。
+
+可以从方正字体\footnote{其它选择： Adobe Fonts 或 Google Fonts}下载方正字体:
+
+\url{https://www.foundertype.com/index.php/FindFont/index}
+
+从Google Fonts 下载 Noto Sans SC 和 Noto Serif SC 字体：
+
+\url{https://fonts.google.com/noto/fonts}
+
+\subsection{Debian}
+
+字体可以安装在下列目录中：
+
+\begin{itemize}
+  \item \url{/usr/share/fonts}
+  \item \url{/usr/local/share/fonts}
+  \item \url{~/.fonts}
+\end{itemize}
+
+\subsection{macOS}
+
+字体可以安装在下列目录中：
+
+\begin{itemize}
+  \item \url{/System/Library/Fonts}
+  \item \url{/Library/Fonts}
+  \item \url{~/Library/Fonts}
+\end{itemize}
+
+\section{修改环境变量 \protect\verbum{OSFONTDIR}}
+
+修改 \url{/usr/local/texlive/2021/texmf.cnf}(根据实际安装的 texlive 版本)，添加：
+
+\subsection{Debian}
+
+\begin{minted}{text}
+OSFONTDIR = /usr/share/fonts//;/usr/local/share/fonts//;~/.fonts//
+\end{minted}
+
+\subsection{macOS}
+
+\begin{minted}{text}
+OSFONTDIR = /System/Library/Fonts//;/Library/Fonts//;~/Library/Fonts//
+\end{minted}
+
+\subsection{设置字体}
+
+{\LaTeX} 使用本地字库，或者在系统字体目录中安装相应的字体。
+其实，{\LaTeX} 可以实现直接读取字体文件（如存储在项目的\url{fonts/}目录下）来进行文档的渲染工作，也就是项目本身含有字体文件
+\footnote{注意：中文字体文件都比较大，会使得项目非常臃肿}。
+
+\begin{minted}{tex}
+  %设置英文字体
+  \setmainfont[
+      Path=fonts/,
+      BoldFont=NotoSerif-Bold.otf,
+      ItalicFont=NotoSerif-RegularItalic.otf,
+      BoldItalicFont=NotoSerif-BoldItalic.otf,
+  ]{NotoSerif-Regular.otf}
+  \setsansfont[
+      Path=fonts/,
+      BoldFont=NotoSans-Bold.otf,
+      ItalicFont=NotoSans-RegularItalic.otf,
+      BoldItalicFont=NotoSans-BoldItalic.otf,
+  ]{NotoSans-Regular.otf}
+  \setmonofont[
+      Path=fonts/
+  ]{NotoSans-Regular.otf}
+   
+  %设置中文字体
+  \setCJKmainfont[
+      Path=fonts/,
+      BoldFont=NotoSerifSC-Bold.otf，
+      ItalicFont=NotoSerifSC-Regular.otf，
+      BoldItalicFont=NotoSerifSC-Bold.otf
+  ]{NotoSerifSC-Regular.otf}
+  \setCJKsansfont[
+      Path=fonts/,
+      BoldFont=NotoSansSC-Bold.otf，
+      ItalicFont=NotoSansSC-Regular.otf，
+      BoldItalicFont=NotoSansSC-Bold.otf
+  ]{NotoSansSC-Regular.otf}
+  \setCJKmonofont[
+      Path=fonts/
+  ]{NotoSansSC-Regular.otf}
+\end{minted}
+
+\section{中文字体}
+
+中文字体与西文字体有很大区别，中文一般没有西文对应的成套字体，如粗体、斜体等。
+衬线（Serif）是字形笔画的起始段与末端的装饰细节部分，有衬线体如Times New Roman，无衬线体(Sans serif)如 Arial。
+中文同样也有衬线体（如宋体）和无衬线体（如黑体）。
+
+\subsection{罗马字体族 Roman family}
+
+这是正文的默认字体，也可以使用 \mintinline{text}{\textrm{文字内容}} 或 \mintinline{text}{{\rmfamily 文字内容}} 重新设置文字的字体.
+
+\begin{itemize}
+  \item Normal: {\rmfamily \mdseries \sampletext}
+  \item Bold: {\rmfamily \bfseries \sampletext}
+  \item Italic: {\rmfamily \itshape \sampletext}
+  \item BoldItalic: {\rmfamily \bfseries \itshape \sampletext}
+\end{itemize}
+
+\subsection{无衬线字体族 Sans serif family}
+
+使用 \mintinline{text}{\textsf{文字内容}} 或 \mintinline{text}{{\sffamily 文字内容}}设置文字的字体.
+
+\begin{itemize}
+  \item Normal: {\sffamily \mdseries \sampletext}
+  \item Bold: {\sffamily \bfseries \sampletext}
+  \item Italic: {\sffamily \itshape \sampletext}
+  \item BoldItalic: {\sffamily \bfseries \itshape \sampletext}
+\end{itemize}
+
+\subsection{打字机字体族 Typewriter family}
+
+通常代码抄录使用该字体族，使用 \mintinline{text}{\texttt{文字内容}} 或 \mintinline{text}{{\ttfamily 文字内容}} 设置文字的字体.
+
+\begin{itemize}
+  \item Normal: {\ttfamily \mdseries \sampletext}
+  \item Bold: {\ttfamily \bfseries \sampletext}
+  \item Italic: {\ttfamily \itshape \sampletext}
+  \item BoldItalic: {\ttfamily \bfseries \itshape \sampletext}
+\end{itemize}
+
+\subsection{中文字体族的定义与使用}
+
+使用 \mintinline{text}{\setCJKfamily{字体名称}{字体文件名}} 定义中文字体族
+\footnote{这里字体名称采用了中文，也可以使用字母，如 songti，fangsong 等}，如：
+
+\begin{minted}{tex}
+  \setCJKfamilyfont{宋体}{方正书宋简体.TTF}
+  \setCJKfamilyfont{圆体}{方正准圆简体.TTF}
+  \setCJKfamilyfont{仿宋}{方正仿宋简体.TTF}
+  \setCJKfamilyfont{楷体}{方正楷体简体.TTF}
+  \setCJKfamilyfont{黑体}{方正黑体简体.TTF}
+  \setCJKfamilyfont{隶书}{方正隶书简体.TTF}
+  \setCJKfamilyfont{行楷}{方正行楷简体.TTF}
+  \setCJKfamilyfont{行书}{字酷堂松雪行书简体.TTF}
+\end{minted}
+
+使用 \mintinline{text}{\CJKfamily{字体名称}{文字内容}} 设置文字的字体。
+
+\begin{table}[!h]
+\begin{center}
+\caption{中文字体族}
+\begin{tabular}{cc}
+  \toprule
+  字体名称 &  示例\\
+  \midrule
+  %宋体 & \CJKfamily{宋体}{\sampletext}\\
+  圆体 & \CJKfamily{圆体}{\sampletext}\\
+  仿宋 & \CJKfamily{仿宋}{\sampletext}\\
+  楷体 & \CJKfamily{楷体}{\sampletext}\\
+  %黑体 & \CJKfamily{黑体}{\sampletext}\\
+  隶书 & \CJKfamily{隶书}{\sampletext}\\
+  %行楷 & \CJKfamily{行楷}{\sampletext}\\
+  %行书 & \CJKfamily{行书}{\sampletext}\\
+  \bottomrule
+\end{tabular}
+\end{center}
+\end{table}

@@ -1,0 +1,115 @@
+\chapter{{\LaTeX} Workshop 编辑器配置}
+
+{\TeX} 自带编辑器 {\TeX} Works，而使用 \href{https://code.visualstudio.com/}{Visulal Studio Code} +
+\href{https://github.com/James-Yu/LaTeX-Workshop}{{\LaTeX} Workshop 插件}也是非常方便的。
+
+\section{VSCode settings.json 文件}
+
+To open the User settings:
+
+\begin{enumerate}
+\item Open the command palette (either with F1 or Ctrl+Shift+P)
+\item Type "open settings"
+\end{enumerate}
+
+You are presented with two options，choose Open Settings (JSON)
+Which，depending on platform，is one of:
+\begin{itemize}
+\item Windows \url{\%APPDATA\%\\Code\\User\\settings.json}
+\item macOS \url{$HOME/Library/Application Support/Code/User/settings.json}
+\item Linux \url{$HOME/.config/Code/User/settings.json}
+\end{itemize}
+
+The Workspace settings will be in a {workspaceName}.code-workspace file where you saved it，and the Folder settings will be in a .vscode folder if and when it has been created.
+
+\begin{minted}{js}
+"latex-workshop.latex.recipe.default": "lastUsed",
+"latex-workshop.latex.recipes": [
+    {
+        "name": "latexmk",
+        "tools": [
+            "latexmk"
+        ]
+    },
+    {
+        "name": "xelatex and bibtex",
+        "tools": [
+            "xelatex",
+            "bibtex",
+            "xelatex",
+            "xelatex"
+        ]
+    }
+],
+"latex-workshop.latex.tools": [
+    {
+        "name": "latexmk",
+        "command": "latexmk",
+        "args": [
+            "-xelatex",
+            "-synctex=1",
+            "-interaction=nonstopmode",
+            "-file-line-error",
+            "-shell-escape",
+            "%DOC%"
+        ]
+    },
+    {
+        "name": "xelatex",
+        "command": "xelatex",
+        "args": [
+            "-synctex=1",
+            "-interaction=nonstopmode",
+            "-file-line-error",
+            "-shell-escape",
+            "%DOC%"
+        ],
+        "env": {}
+    },
+    {
+        "name": "bibtex",
+        "command": "bibtex",
+        "args": [
+            "%DOCFILE%"
+        ],
+        "env": {}
+    }
+],
+"latex-workshop.latex.autoClean.run": "onBuilt",
+"latex-workshop.latex.clean.fileTypes": [ 
+    "*.aux"，"*.bbl"，"*.pyg",
+    "*.idx"，"*.ind"，"*.lof"，
+    "*.lot"，"*.out"，"*.toc"，
+    "*.acn"，"*.acr"，"*.alg"，
+    "*.glg"，"*.glo"，"*.gls"，
+    "*.fls"，"*.log"，"*.fdb_latexmk"，
+    "*.snm"，"*.synctex"，"*.synctex.gz"，
+    "*.nav"，"*.xdv"，"*.ilg",
+    "*.blg"，"*.lol"，"*.cpt"
+],
+\end{minted}
+
+\section{Build with Recipe}
+
+Build with recipe:
+
+macOS: fn+F1 -> Search 'Build with recipe' -> Select the recipe
+
+默认的 recipe 是使用 latexmk，为了处理中文，配置编译器为 xelatex.
+对于普通的文档可行，但是遇到有文献目录的就无法自动生成.
+
+含有文献目录的 tex 需要多次编译:
+
+\begin{minted}{bash}
+xelatex [options] filename.tex # 生成 filename.aux
+bibtex filename.aux            # 生成 filename.bbl
+xelatex [options] filename.tex
+xelatex [options] filename.tex
+\end{minted}
+
+关于中间文件的删除
+
+\begin{enumerate}
+\item 设置 onBuilt 就清除，或者
+\item macOS: option+command+c 不太灵敏\footnote{快捷键查看: VSCode左边最下面齿轮 -> Keyboard Shortcuts}
+\end{enumerate}

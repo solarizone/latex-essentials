@@ -1,0 +1,63 @@
+\documentclass[a4paper, titlepage]{ctexbook}
+\usepackage{compositor}
+
+%\setmainfont{Arial}
+
+% input 搜索路径, 但是这个设置对 inputminted 不起作用
+% 因此在 inputminted 还有引用相对主文件的路径
+\makeatletter
+\def\input@path{{./snippets}}
+\makeatother 
+
+\title{{\LaTeX}概要}
+
+\makeindex[intoc]  % 创建索引
+
+\renewcommand{\listalgorithmname}{算法清单}
+
+\begin{document}
+
+% 设置顶部对齐，防止文字与图片混排时出现多余的空白
+% book 默认是两端对齐
+\raggedbottom 
+
+\frontmatter
+
+\maketitle
+
+\input{chapters/preface.tex}
+
+\tableofcontents
+
+\listoffigures
+
+\listoftables
+
+\listoflistings
+
+\listofalgorithms
+\addcontentsline{toc}{chapter}{\listalgorithmname} % 添加到目录中
+
+\mainmatter
+
+\input{chapters/installation.tex}
+\input{chapters/latex-workshop.tex}
+\input{chapters/fonts.tex}
+% \input{chapters/codelistings.tex}
+% \input{chapters/algorithms.tex}
+% \input{chapters/theorems.tex}
+% \input{chapters/formulas.tex}
+% \input{chapters/beamer.tex}
+% \input{chapters/programming.tex}
+% \input{chapters/tikz.tex}
+
+\backmatter
+
+\cleardoublepage
+\addtocontents{toc}{\bigskip}
+
+\bibliography{references}
+
+\printindex % 索引
+
+\end{document}
