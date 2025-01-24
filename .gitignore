@@ -284,3 +284,7 @@ svg-inkscape/
 
 *.gnuplot
 *.table
+
+*.mul
+
+.DS_Store

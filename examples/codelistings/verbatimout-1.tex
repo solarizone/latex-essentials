@@ -1,0 +1,17 @@
+% https://tex.stackexchange.com/questions/37792/write-environment-body-verbatim-to-a-file
+\documentclass{article}
+
+\usepackage{fancyvrb}
+\newenvironment{tobiwrite}[1]
+  {\typeout{Writing file #1}\VerbatimOut{#1}}
+  {\endVerbatimOut}
+
+\begin{document}
+\begin{tobiwrite}{tobi.txt}
+a
+
+b
+c
+\end{tobiwrite}
+hello world
+\end{document}

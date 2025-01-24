@@ -1,0 +1,18 @@
+\documentclass{article} 
+\usepackage{minted}
+\usepackage{lipsum}
+
+\begin{document}
+
+  % 解析语法错误时 会加边框
+  % https://tex.stackexchange.com/questions/343494/minted-red-box-around-greek-characters
+  \makeatletter
+  \AtBeginEnvironment{minted}{\dontdofcolorbox}
+  \def\dontdofcolorbox{\renewcommand\fcolorbox[4][]{##4}}
+  \makeatother
+
+  \begin{minted}[bgcolor=gray]{html}
+  <div class="mode" [ngClass]="{'hidden': x.id == y.id}" *ngIf="z == m"></div>
+  \end{minted}
+
+\end{document}

@@ -1,0 +1,90 @@
+\chapter{定理与证明的排版}
+
+\section{定理环境的实现}
+
+下面是一个自定义的定理环境\footnote{\url{https://www.overleaf.com/learn/latex/Environments}}：
+
+\begin{texcode}
+\newcounter{thm}[section]
+\newenvironment{thm}[1][]{\refstepcounter{thm}\par\medskip
+   \noindent \textbf{定理~\thesection.\thethm. [#1]} \rmfamily}{\medskip}
+
+\begin{thm}[Pythagoras theorem]
+The area of the square whose side is the \textit{hypotenuse} (the side opposite the right angle) is equal to the sum of the areas of the squares on the other two sides.
+\end{thm}
+\end{texcode}
+
+\section{使用 {\AmS} amsthm 包}
+
+在 compositors 宏包中定义了
+\verbum{theorem}，
+\verbum{lemma}，
+\verbum{proposition}，
+\verbum{corollary}，
+\verbum{definition}，
+\verbum{example}，
+\verbum{remark}，
+\verbum{remark*}，
+\verbum{solution}，
+\verbum{solution*}，
+\verbum{proof}环境。
+
+\begin{texcode}
+\begin{definition}[Hypotenuse]
+  The longest side of a triangle with a right angle is called the \emph{hypotenuse}.
+\end{definition}
+\end{texcode}
+
+\begin{texcode}
+\begin{remark}
+  The other sides are called \emph{catheti}, or \emph{legs}.
+\end{remark}
+\end{texcode}
+
+\begin{texcode}
+\begin{theorem}[Pythagoras]
+  \label{pythagoras}
+  In any right triangle, the square of the hypotenuse equals the sum of the squares of the other sides.
+\end{theorem}
+\end{texcode}
+
+\begin{texcode}
+\begin{proof}
+  The proof has been given in Euclid's Elements,
+  Book 1, Proposition 47. Refer to it for details.
+  The converse is also true, see lemma \ref{converse}. 
+\end{proof}
+\end{texcode}
+
+\begin{texcode}
+\begin{lemma}
+  \label{converse}
+  For any three positive numbers \(x\), \(y\),
+  and \(z\) with \(x^2 + y^2 = z^2\), there is a triangle with side lengths \(x\), \(y\) and \(z\). Such triangle has a right angle, and the hypotenuse has the length \(z\).
+\end{lemma}
+\end{texcode}
+
+\begin{texcode}
+\begin{remark*}
+  This is the converse of theorem \ref{pythagoras}.
+\end{remark*}
+\end{texcode}
+
+\section{例题与解的排版}
+
+\begin{texcode}
+\begin{example}
+  求方程 $$ x^2 - x - 12 = 0 $$ 的根.
+\end{example}
+  
+\begin{solution*}
+  对方程左边进行因式分解:
+  \begin{gather*}
+    (x-4)(x+3) = 0 \\
+    \intertext{因此,}
+    x-4=0 \text{\quad 或 \quad} x+3=0 \\
+    \intertext{所以, 方程的根是:}
+    x_1 = 4, \quad x_2 = -3
+  \end{gather*}
+\end{solution*}
+\end{texcode}

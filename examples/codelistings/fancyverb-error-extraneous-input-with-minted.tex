@@ -1,0 +1,19 @@
+% https://tex.stackexchange.com/questions/365528/stuff-following-minted-environment-causes-error
+
+\documentclass{article}
+\usepackage{minted}
+
+% 下面的代码将导致错误:
+% \begin{minted}{python}% this comment is also a problem
+% a = 0
+% \end{minted}% this comment is a problem
+
+\begin{document}
+
+\begin{minted}[breaklines]{text}
+FancyVerb Error:
+  Extraneous input `% this comment is a problem\end{}' between \end{minted} and line end
+\end{minted}
+
+\end{document}
+

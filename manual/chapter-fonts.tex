@@ -1,5 +1,8 @@
-\documentclass[a4paper,titlepage]{ctexart}
-\usepackage{compositor}
+\documentclass[UTF8,a4paper,titlepage]{ctexart}
+
+\usepackage{../compositor}
+\usepackage{../fontset}
+\usepackage{../codeblocks}
 
 \newcommand\chapter{}
 \title{{\LaTeX} 字体}
@@ -9,7 +12,7 @@
 % input 搜索路径, 但是这个设置对 inputminted 不起作用
 % 因此在 inputminted 还有引用相对主文件的路径
 \makeatletter
-\def\input@path{{../snippets}}
+\def\input@path{{./snippets}}
 \makeatother 
 
 \makeindex[intoc]  % 创建索引
@@ -25,7 +28,7 @@
 \tableofcontents
 \cleardoublepage
 
-\input{../chapters/fonts.tex}
+\input{chapters/fonts.tex}
 
 \cleardoublepage
 \addtocontents{toc}{\bigskip}

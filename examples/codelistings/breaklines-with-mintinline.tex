@@ -1,0 +1,58 @@
+% 在设置 bgcolor 的情况下 mintinline 不会换行, 其原因是 minted 内部使用了 tcolorbox
+% https://tex.stackexchange.com/questions/9097/background-colour-with-minted-package-code-misplaced
+% https://tex.stackexchange.com/questions/419934/breaklines-doesnt-work-with-mintinline
+
+% The documentation reads:
+%   Automatic line breaks are limited with Pygments styles that use a colored background behind large chunks of text. This coloring is accomplished with \colorbox,
+%   which cannot break across lines. It may be possible to create an alternative to
+%   \colorbox that supports line breaks, perhaps with TikZ, but the author is unaware
+%   of a satisfactory solution. The only current alternative is to redefine \colorbox so
+%   that it does nothing. 
+
+\documentclass[11pt]{ctexart}
+\usepackage{minted}
+%\usepackage{../../compositor}
+\usepackage{verbatim}
+
+\setmintedinline{
+  bgcolor=lightgray,
+}
+
+\newcommand{\lipsum}{}
+
+\begin{document}
+
+Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.
+\mintinline[breaklines]{text}{Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.}
+
+Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.
+\mintinline[breaklines, bgcolor=cyan]{text}{Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.}
+
+Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.
+\mintinline[breaklines, bgcolor=white]{text}{Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.}
+
+Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.
+\mintinline[breaklines, bgcolor=]{text}{Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.}
+
+Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.
+\mintinline[breaklines]{text}{Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.}
+
+Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.
+% \verbum{Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.}
+
+Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.
+\texttt{Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.}
+
+Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.
+% \hyphentt{Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.}
+
+Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.
+\begin{verbatim*}Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\end{verbatim*}
+
+% 中文没有类似的 Lorem ipsum，不过你可以使用 \verbum{鉴于对人类家庭所有成员的固有尊严及其平等的和不移的权利的承认,乃是世界自由、正义与和平的基础。}
+
+中文没有类似的 Lorem ipsum，不过你可以使用 \mintinline{text}{鉴于对人类家庭所有成员的固有尊严及其平等的和不移的权利的承认,乃是世界自由、正义与和平的基础。}
+
+中文没有类似的 Lorem ipsum，不过你可以使用 \mintinline[breaklines,bgcolor=]{text}{鉴于对人类家庭所有成员的固有尊严及其平等的和不移的权利的承认,乃是世界自由、正义与和平的基础。}
+
+\end{document}

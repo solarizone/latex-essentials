@@ -1,5 +1,9 @@
 \documentclass[a4paper, titlepage]{ctexbook}
-\usepackage{compositor}
+%\usepackage{compositor}
+
+\usepackage{../compositor}
+\usepackage{../fontset}
+\usepackage{../codeblocks}
 
 %\setmainfont{Arial}
 
@@ -11,9 +15,9 @@
 
 \title{{\LaTeX}概要}
 
-\makeindex[intoc]  % 创建索引
+%\makeindex[intoc]  % 创建索引
 
-\renewcommand{\listalgorithmname}{算法清单}
+%\renewcommand{\listalgorithmname}{算法清单}
 
 \begin{document}
 
@@ -35,21 +39,22 @@
 
 \listoflistings
 
-\listofalgorithms
-\addcontentsline{toc}{chapter}{\listalgorithmname} % 添加到目录中
+%\listofalgorithms
+%\addcontentsline{toc}{chapter}{\listalgorithmname} % 添加到目录中
 
 \mainmatter
 
 \input{chapters/installation.tex}
 \input{chapters/latex-workshop.tex}
 \input{chapters/fonts.tex}
-% \input{chapters/codelistings.tex}
-% \input{chapters/algorithms.tex}
-% \input{chapters/theorems.tex}
-% \input{chapters/formulas.tex}
+\input{chapters/codelistings.tex}
+\input{chapters/algorithms.tex}
+\input{chapters/theorems.tex}
+\input{chapters/formulas.tex}
 % \input{chapters/beamer.tex}
 % \input{chapters/programming.tex}
 % \input{chapters/tikz.tex}
+\input{chapters/troubleshooting.tex}
 
 \backmatter
 
@@ -58,6 +63,6 @@
 
 \bibliography{references}
 
-\printindex % 索引
+%\printindex % 索引
 
 \end{document}

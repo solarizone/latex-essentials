@@ -1,0 +1,16 @@
+% https://tex.stackexchange.com/questions/281590/adding-starred-section-and-subsection-to-table-of-content-without-numbering
+\documentclass{article}
+
+\begin{document}
+\tableofcontents
+\clearpage
+
+\section{dd}
+\section*{First}
+\addcontentsline{toc}{section}{First}
+\subsection*{First subsec}
+\addcontentsline{toc}{subsection}{First sub}
+\subsection*{First subsubsec}
+\addcontentsline{toc}{subsubsection}{First subsub}
+
+\end{document}

@@ -1,0 +1,379 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{codemint}[2024/11/29 v1.0 Code typesetting package]
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Settings for the Package minted
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% To control how LATEX counts the listing floats, you can pass either the
+% section or chapter option when loading the minted package.
+%
+% 代码标题在 listing 中的上部(float 默认是在下部)
+% https://tex.stackexchange.com/questions/57353/how-to-get-caption-above-listing-with-minted
+% =============================================================================
+\makeatletter%
+\@ifclassloaded{book}% 对于 documentclass 为 ctexbook, book
+{
+  \RequirePackage[chapter,newfloat]{minted}
+}{
+  \RequirePackage[section,newfloat]{minted}  
+}
+\makeatother%
+
+\makeatletter%
+\@ifpackageloaded{xcolor}{}%
+{%
+  \RequirePackage[dvipsnames,svgnames,x11names,table]{xcolor}
+}
+\makeatother%
+
+\makeatletter%
+\@ifpackageloaded{xpatch}{}%
+{%
+  \RequirePackage{xpatch}  
+}
+\makeatother%
+
+\makeatletter%
+\@ifpackageloaded{tikz}{}%
+{%
+  \RequirePackage{tikz}  
+}
+\makeatother%
+
+% 源代码抄录环境配置 minted
+\usemintedstyle{xcode}
+
+% Visual Studio dark theme
+\definecolor{vsdark}{RGB}{37,37,38}
+
+% Pygments 在解析出现错误时会产生 \PYG{err}, 渲染后出现红色外框, 下面是解决方法:
+% https://tex.stackexchange.com/questions/343494/minted-red-box-around-greek-characters
+\makeatletter
+\AtBeginEnvironment{minted}{\dontdofcolorbox}
+\def\dontdofcolorbox{\renewcommand\fcolorbox[4][]{##4}}
+\xpatchcmd{\inputminted}{\minted@fvset}{\minted@fvset\dontdofcolorbox}{}{}
+\xpatchcmd{\mintinline}{\minted@fvset}{\minted@fvset\dontdofcolorbox}{}{} % see https://tex.stackexchange.com/a/401250/
+\makeatother
+
+% listing envrioment for large source file page breaking
+% https://tex.stackexchange.com/questions/12428/code-spanning-over-two-pages-with-minted-inside-listing-with-caption/53540#53540
+\newenvironment{codelisting}{\captionsetup{type=listing}}{}
+\setminted{
+  %linenos=true,
+  % 如果设置 bgcolor 并且包含在 tcolorbox 中时, tcolorbox 不能跨页分割
+  %bgcolor=cyan!5!white,               % 背景颜色 
+  highlightcolor=Gold,                % 高亮颜色
+  breaklines=true,
+  breakafter=-/\#\{\}\%\[\]\\\(\).,   % 在空格, ‘-’ 或 ‘/’ 等符号之后断行
+  %escapeinside=||,
+  %mathescape=true,
+  xleftmargin=1em,
+  xrightmargin=1em,
+}
+
+% https://tex.stackexchange.com/questions/84789/minted-with-frame-and-bgcolor/88384
+\makeatletter
+\setlength{\fboxsep}{\z@} % 内部文本与边框无边距
+\makeatother
+
+% https://tex.stackexchange.com/questions/228058/how-to-space-before-and-after-a-minted-code-block-with-bgcolor
+% 查看 minted 代码可知通过修改 medskip 的间隔大小可以实现
+\makeatletter
+\newlength{\minted@medskipamount}
+\setlength{\minted@medskipamount}{\medskipamount}
+\BeforeBeginEnvironment{minted}{\setlength{\medskipamount}{0pt}}
+\AfterEndEnvironment{minted}{\setlength{\medskipamount}{\minted@medskipamount}}
+\makeatother
+
+% The minted package manual reads: 
+%   This option puts \mintinline inside a \colorbox, which does not allow line
+%   breaks. If you want to use \setminted to set background colors, and only want
+%   background colors on minted and \mint, you may use \setmintedinline{bgcolor={}}
+%   to turn off the coloring for inline commands.
+\setmintedinline{
+  linenos=false,
+  bgcolor={},
+  breaklines=true,
+  breakafter=-/\#\{\}\%\[\]\\\(\).\_,    % 在空格, ‘-’ 或 ‘/’ 等符号之后断行
+}
+
+% line number font size
+\renewcommand\theFancyVerbLine{\small\arabic{FancyVerbLine}}
+
+% 在抄录环境下高亮显示特定行, 语言选择 text
+% https://tex.stackexchange.com/questions/393526/bold-letters-within-minted-bash-text
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Settings for the Package listings
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% listings 包设置 与 JavaScript 语言设置 (listings 可以作为 minted 的替代)
+\RequirePackage{listings}
+% Code Styles
+\lstset{ 
+  basicstyle=\ttfamily,                         % the size of the fonts that are used for the code
+  backgroundcolor=\color{PaleGreen}, 
+  breaklines=true,                              % sets automatic line breaking
+  commentstyle=\color{Green}\rmfamily\itshape,  % comment style
+  emphstyle=\color{red},   
+  firstnumber=1,                                % start line enumeration with line 1000
+  %frame=single,	                                % adds a frame around the code
+  keepspaces=true,                              % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+  keywordstyle={[1]\color{Indigo}\bfseries},    % keyword style
+  keywordstyle={[2]\color{DarkMagenta}},
+  identifierstyle=\color{Blue},   
+  numbers=left,                                 % where to put the line-numbers; possible values are (none, left, right)
+  numbersep=10pt,                               % how far the line-numbers are from the code
+  numberstyle=\color{Gray}\rmfamily,            % the style that is used for the line-numbers
+  rulecolor=\color{black},                      % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+  showspaces=false,                             % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+  showstringspaces=false,                       % underline spaces within strings only
+  showtabs=false,                               % show tabs within strings adding particular underscores
+  stepnumber=1,                                 % the step between two line-numbers. If it's 1, each line will be numbered
+  stringstyle=\color{ForestGreen}\ttfamily,     % string literal style
+  tabsize=2,	                                  % sets default tabsize to 2 spaces
+  title=\lstname                                % show the filename of files included with \lstinputlisting; also try caption instead of title
+}
+
+% JavaScript language
+\lstdefinelanguage{JavaScript}{
+  morekeywords=[1]{
+    as,async,await,break,case,catch,class,const,continue,
+    debugger,default,delete,do,else,enum,export,extends,
+    false,finally,for,from,function,if,implements,import,
+    in,interface,instanceof,let,new,null,of,package,private,
+    protected,public,return,set,static,super,switch,target,
+    this,throw,true,try,typeof,undefined, var,void,while,with,yield
+  },  % JavaScript ES6 keywords
+  morekeywords=[2]{
+    console, Array, Boolean, DataView, Date, Error,
+    EvalError, Float32Array, Float64Array, forEach, FulfillPromise, Function,
+    Infinity, Int8Array, Int16Array, Int32Array, 
+    IsPromise, Iterable, JSON, localeCompare, Map, Math, Number, Object, 
+    Promise, Proxy, RangeError, ReferenceError, Reflect, Reflection, RegExp,
+    Set, String, Symbol, SyntaxError, then,  
+    TriggerPromiseReactions, TypeError, Uint8Array, Uint8ClampedArray, 
+    Uint16Array, Uint32Array, URIError, 
+    WeakMap, WeakSet
+  },  % JavaScript extended keywords
+  sensitive=true,
+  morestring=[b]",                                    % String definition
+  morestring=[d]',
+  morestring=[s][\color{ForestGreen}\ttfamily]{`}{`},
+  morecomment=[l]{//},                                % Comment definition
+  morecomment=[s]{/*}{*/},
+  morecomment=[s]{/**}{*/},
+  emph={
+    props,methods,computed,mutations,actions,template
+  }                                                   % Vue.js
+}
+
+\lstalias{ES6}{JavaScript}
+\lstalias{ECMAScript2015}{JavaScript}
+\lstalias{js}{JavaScript}
+
+% minted 与 listings 混合使用时的编号问题
+% https://tex.stackexchange.com/questions/269491/mixing-minted-with-lstlisting
+
+\renewcommand{\lstlistingname}{代码}
+%\renewcommand{\listingscaption}{代码}%使用newfloat之后失效
+%\renewcommand{\listoflistingscaption}{代码清单}%使用newfloat之后失效
+\SetupFloatingEnvironment{listing}{name=代码}
+\SetupFloatingEnvironment{listing}{listname=代码清单}
+\AtBeginEnvironment{listing}{\setcounter{listing}{\value{lstlisting}}}
+\AtEndEnvironment{listing}{\stepcounter{lstlisting}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Combine Latex Code and its Result
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Resolving "FancyVerb Error: Extraneous input `...' between ...":
+%   https://tex.stackexchange.com/questions/365528/stuff-following-minted-environment-causes-error
+%
+%
+% \inputlatexcode 命令用于显示 latex 代码文件和渲染后的效果, 参数是文件名 
+% 注意: 在主文件定义 input 的搜索路径, 对 inputminted 不起作用
+% algorithm 与 tcolorbox 存在冲突
+% \newcommand{\inputlatexcode}[2][colorbox]{
+%   \inputminted[linenos=true]{latex}{#2}
+%   \ifthenelse{\equal{#1}{colorbox}}{
+%     \par\noindent\textcolor{teal}{\rule{\textwidth}{2pt}}
+%     \input{#2}
+%     \par\noindent\textcolor{teal}{\rule{\textwidth}{2pt}}
+%   }{}
+%   \ifthenelse{\equal{#1}{nobox}}{
+%     \input{#2}
+%   }{}
+% }
+
+% 对上面的代码进行修改, 使之结束 key-value 参数
+% 以字符串形式传递键值对参数 \expandafter 控制展开顺序
+% https://tex.stackexchange.com/questions/163265/passing-variable-as-argument
+% https://tex.stackexchange.com/questions/554397/forward-list-of-key-value-pairs-to-other-command-in-expl3
+\makeatletter
+\define@key{latexcode}{color}{\def\latexcode@color{#1}}
+\define@key{latexcode}{mint}{\def\latexcode@mint{#1}}% parameters for minted
+\setkeys{latexcode}{color=teal,mint={}}%默认值
+\newcommand{\inputlatexcode}[2][]{
+  {
+    \setkeys{latexcode}{#1}
+    \expandafter\inputminted\expandafter[\latexcode@mint]{latex}{#2}
+    \ifthenelse{\equal{\latexcode@color}{}}{
+      \input{#2}
+    }{
+      \par\noindent\tikz \draw[line width=2pt,\latexcode@color] (0,0) -- (\textwidth,0);\par
+      \input{#2}
+      \par\noindent\tikz \draw[line width=2pt,\latexcode@color] (0,0) -- (\textwidth,0);\par
+    }{}
+  }
+}
+\makeatother
+
+% 渲染 tikz 绘图代码文件, 参数 2 是 caption
+\newcommand{\inputtikz}[3][withoutcode]{
+  \ifthenelse{\equal{#1}{withcode}}{
+    \inputminted[linenos=true]{latex}{#3}
+  }{}
+  \begin{figure}[H]
+    \centering
+    \input{#3}
+    \caption{#2}
+  \end{figure}
+}
+
+% 参考 https://tex.stackexchange.com/questions/37792/write-environment-body-verbatim-to-a-file
+% \newenvironment{latexcode}
+%   {\typeout{Writing file \jobname.latexcode}\VerbatimOut{\jobname.latexcode}}
+%   {\endVerbatimOut\inputminted{latex}{\jobname.latexcode}\input{\jobname.latexcode}}
+
+% https://tex.stackexchange.com/questions/9035/how-to-pass-an-optional-argument-to-an-environment-with-verbatim-content
+% 版本 1: 显示 LaTeX 代码并渲染, 先将环境中的代码写入文件, 随后读入
+\newenvironment{latexcode}[1]% 不要设置默认参数, 否则出现 FancyVerb Error: Extraneous input ...
+  { % start part
+    \newcommand\boxstyle{#1}% end part 不能直接访问参数
+    \typeout{Writing file \jobname.latexcode}
+    \VerbatimOut{\jobname.latexcode}}% 最后的括号不要另起行
+  { % end part
+    \endVerbatimOut
+    \inputminted{latex}{\jobname.latexcode}
+    \ifthenelse{\equal{\boxstyle}{colorbox}}{
+      \par\noindent\tikz\draw[line width=2pt,teal] (0,0) -- (\textwidth,0);\par
+      \input{\jobname.latexcode}
+      \par\noindent\tikz\draw[line width=2pt,teal] (0,0) -- (\textwidth,0);\par
+    }{}
+    \ifthenelse{\equal{\boxstyle}{nobox}}{
+      \input{\jobname.latexcode}
+    }{}}
+
+% https://tex.stackexchange.com/questions/9035/how-to-pass-an-optional-argument-to-an-environment-with-verbatim-content
+% 版本 2: (解决VerbatimOut 和 environment 带参数问题) 显示 LaTeX 代码并渲染, 先将环境中的代码写入文件, 随后读入
+% 三种形式:
+%   \begin{texcode} ... \end{texcode} % 默认 colorbox
+%   \begin{texcode}{colorbox} ... \end{texcode}
+%   \begin{texcode}{nobox} ... \end{texcode}
+
+% \makeatletter
+% \newenvironment{texcode}
+%   { % start part
+%     \typeout{Writing file \jobname.latexcode}
+%     \catcode`\^^M=\active
+%     \@ifnextchar[%
+%       {\catcode`\^^M=5 \texcode@}
+%       {\catcode`\^^M=5 \texcode@[colorbox]}}
+%   { % end part
+%     %\typeout{boxstyle: \texcode@boxstyle}
+%     \endVerbatimOut%
+%     \inputminted{latex}{\jobname.latexcode}
+%     \ifthenelse{\equal{\texcode@boxstyle}{colorbox}}{
+%       \par\noindent\textcolor{teal}{\rule{\textwidth}{2pt}}
+%       \input{\jobname.latexcode}
+%       \par\noindent\textcolor{teal}{\rule{\textwidth}{2pt}}
+%     }{}
+%     \ifthenelse{\equal{\texcode@boxstyle}{nobox}}{
+%       \input{\jobname.latexcode}
+%     }{}}
+% \def\texcode@[#1]{%
+%   \newcommand{\texcode@boxstyle}{#1}% end part 不能直接访问参数
+%   \VerbatimEnvironment
+%   \VerbatimOut{\jobname.latexcode}%
+% }
+% \makeatother
+
+% https://tex.stackexchange.com/questions/9035/how-to-pass-an-optional-argument-to-an-environment-with-verbatim-content
+% 版本 3: (使用 key-value 参数) 显示 LaTeX 代码并渲染, 先将环境中的代码写入文件, 随后读入
+% 三种形式:
+%   \begin{texcode} ... \end{texcode} % 默认颜色 teal
+%   \begin{texcode}[color=red] ... \end{texcode}
+%   \begin{texcode}{color={}} ... \end{texcode} % 不画分隔线
+
+\makeatletter
+\define@key{texcode}{color}{\def\texcode@color{#1}}
+\define@key{texcode}{mint}{\def\texcode@mint{#1}}% parameters for minted
+\setkeys{texcode}{color=teal,mint={}}%默认值
+\newenvironment{texcode}
+  { % start part
+    \typeout{Writing file \jobname.latexcode}
+    \catcode`\^^M=\active
+    \@ifnextchar[%
+      {\catcode`\^^M=5 \texcode@}
+      {\catcode`\^^M=5 \texcode@[color=teal,mint={}]}}% 默认值
+  { % end part
+    \endVerbatimOut%
+    \expandafter\inputminted\expandafter[\texcode@mint]{latex}{\jobname.latexcode}
+    \ifthenelse{\equal{\texcode@color}{}}{
+      \input{\jobname.latexcode}
+    }{
+      \leavevmode%You can't use `\unskip' in vertical mode.Switch vertical mode to horizonal mode.
+      \par\unskip\noindent\tikz\draw[line width=2pt,\texcode@color] (0,0) -- (\textwidth,0);\par
+      \input{\jobname.latexcode}
+      \par\noindent\tikz\draw[line width=2pt,\texcode@color] (0,0) -- (\textwidth,0);\par
+    }
+  }
+\def\texcode@[#1]{%
+  \setkeys{texcode}{#1}
+  \VerbatimEnvironment
+  \VerbatimOut{\jobname.latexcode}%
+}
+\makeatother
+
+% latexcode 环境也可以利用 tcblisting 环境来实现
+% \tcbuselibrary{minted}
+% \newtcblisting{latexcode}{%
+%   breakable,%listing outside text,
+%   colback=cyan!5!white,colframe=cyan!75!black,
+%   listing engine=minted,minted language=latex,
+%   minted options={mathescape,fontsize=\normalsize},  
+% }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Algorithm
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 算法排版, algorithm 与 tcolorbox 存在冲突
+% 当同时引入 algpseudocode 和 algpascal, 必须使用
+% \alglanguage{pseudocode} 或 \alglanguage{pascal}
+\RequirePackage{algorithm}
+\RequirePackage{algpseudocode}
+\RequirePackage{algpascal}
+
+% 对于长算法跨页显示
+% https://tex.stackexchange.com/questions/428001/long-algorithm-cannot-split-into-two-pages
+% https://tex.stackexchange.com/questions/33866/algorithm-tag-and-page-break/33869#33869
+\makeatletter
+\newenvironment{breakablealgorithm}
+  {% \begin{breakablealgorithm}
+   \begin{center}
+     \refstepcounter{algorithm}% New algorithm
+     \hrule height.8pt depth0pt \kern2pt% \@fs@pre for \@fs@ruled
+     \renewcommand{\caption}[2][\relax]{% Make a new \caption
+       {\raggedright\textbf{\ALG@name~\thealgorithm} ##2\par}%
+       \ifx\relax##1\relax % #1 is \relax
+         \addcontentsline{loa}{algorithm}{\protect\numberline{\thealgorithm}##2}%
+       \else % #1 is not \relax
+         \addcontentsline{loa}{algorithm}{\protect\numberline{\thealgorithm}##1}%
+       \fi
+       \kern2pt\hrule\kern2pt
+     }
+  }{% \end{breakablealgorithm}
+     \kern2pt\hrule\relax% \@fs@post for \@fs@ruled
+   \end{center}
+  }
+\makeatother

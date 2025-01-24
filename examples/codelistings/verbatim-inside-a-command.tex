@@ -1,0 +1,30 @@
+% https://tex.stackexchange.com/questions/83893/verbatim-inside-a-command
+
+\documentclass{ctexart}
+
+\usepackage{../../compositor}
+
+\begin{document}
+
+% 出现在标题中需要使用 \protect
+\section{新建命令：\protect\verbum{newcommand}}
+
+\verbum*{newcommand} 用于新建命令
+
+\verbum*{}
+
+\verbum*{\{}
+
+\verbum*{\}}
+
+\verbum{\{}
+
+\verbum{\}}
+
+\verbum*{begin\{column\}}
+
+\verbum{[fragile]}
+
+\verbum*{usefottheme{professionalfonts}} 
+
+\end{document}

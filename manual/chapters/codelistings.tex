@@ -1,0 +1,266 @@
+\chapter{源代码排版}
+
+\section{\protect\verbum{verbatim} 环境与 \protect\verbum*{verb} 命令}
+
+\verbum{verbatim} 环境适合比较简单场合下使用，无法实现代码的高亮显示，如：
+
+%\begin{texcode}
+\begin{verbatim}
+#include <stdio.h>
+
+int main(int argc, char **argc) {
+  printf("Hello, world\n");
+  return 0;
+}
+\end{verbatim}
+%\end{texcode}
+
+\verbum*{verb} 命令可以用于代码显示\footnote{行内长串代码显示存在换行的问题，可以使用 \verbum*{ttfamily} 作为替代方案。}
+，如：\mintinline{text}{\verb|message = "hello,world"|}。
+并且 \verbum*{verb} 命令用在标题中请在前面加上 \verbum*{protect}。
+
+\section{\protect\verbum*{verbum} 和 \protect\verbum*{verbum*} 命令}
+
+实际上使用 \mintinline{text}{{\tffamily message = "hello,world"}} 也可以达到类似的效果；
+compositor 包中的 \verbum*{verbum} 和 \verbum*{verbum*} 命令正是基于此，通常在行尾能够自动换行，
+如果行尾的单词过长，有可能会超出
+\footnote{\url{https://tex.stackexchange.com/questions/44361/how-to-automatically-hyphenate-within-texttt}}。
+如果不想要超出，可以考虑其它的对齐方式，如\verbum*{raggedright}。
+并且 \verbum*{verbum} 和 \verbum*{verbum*} 命令用在标题中也需要在前面加上 \verbum*{protect}
+\footnote{\url{https://tex.stackexchange.com/questions/83893/verbatim-inside-a-command}}。
+
+例如：\verbum*{verbum} 在  \verbum*{section} 中，出现错误：
+\mintinline{text}{Token not allowed in a PDF string (Unicode): (hyperref) removing `\new@ifnextchar'.} 
+
+这是因为宏展开导致 hyperref 生成 pdf 书签时产生错误。
+
+\begin{remark*}
+\verbum*{mintinline} 用在章节标题之中，会有一些修饰的文字，也是不适合的。
+\end{remark*}
+
+\section{listings 包}
+
+\subsection{\protect\verbum{lstlisting} 环境}
+
+%\begin{texcode}
+\begin{lstlisting}[language=C,caption={C/C++ 语言},numbers=left]
+  /* Hello, world */
+  int main{int argc, char **argv} {
+    printf("Hello, world\n");
+    return 0;
+  }
+\end{lstlisting}
+%\end{texcode}
+
+\subsection{\protect\verbum*{lstinline} 命令}
+
+\verbum*{lstinline} 命令可以使用行内的代码显示，如：\mintinline{text}{\lstinline|message = "hello,world"|}
+
+\subsection{\protect\verbum*{lstinputlisting} 命令}
+
+显示代码文件，文件路径为相对于主文件的路径:
+
+%\begin{texcode}
+\lstinputlisting[language=C,caption={hello.c 文件},numbers=left]{../examples/codelistings/helloworld.c}
+%\end{texcode}
+
+\subsection{自定义语言}
+
+listings 包没有提供 JavaScript 语言高亮显示， 但是可以自定义（详见模板）。
+
+%\begin{texcode}
+\begin{lstlisting}[language=js,caption={JavaScript 语言}]
+// 向控制台输出 'hello, world'
+const message = 'hello, world'
+console.log(message)
+\end{lstlisting}
+%\end{texcode}
+
+其它的扩展见 StackOverflow
+\footnote{\url{https://tex.stackexchange.com/questions/224093/adding-keywords-to-existing-language-for-listings-package}}
+。
+
+\section{minted 包}
+
+minted 包需要借助 \href{https://pygments.org/}{pygments} 来渲染代码。
+minted 整体风格比 listings 略胜一筹。
+
+\subsection{支持的语言和风格}
+
+首先，安装 pygments：
+
+\mint{bash}{pip3 install pygments}
+
+查看支持的语言：
+
+\mint{bash}|pygmentize -L lexers|
+
+查查支持的风格：
+
+\mint{bash}|pygmentize -L styles|
+
+此外，可以通过网站
+\href{https://pygments.org/demo/}{Pygments website}或
+\href{https://thepythonguru.com/tools/pygments-demo/}{Syntax Highlighter}
+来查看各种代码渲染的风格\footnote{注意：部分风格与一些特殊字符有冲突，比较可靠的风格是 xcode。}。
+
+\subsection{\protect\verbum{minted} 环境}
+
+%\begin{texcode}
+\begin{minted}[linenos,highlightlines={1}]{c}
+int main{int argc, char **argv} {
+  printf("Hello, world\n");
+  return 0;
+}
+\end{minted}
+%\end{texcode}
+
+\subsection{\protect\verbum*{mint} 命令}
+
+对于单行的代码，可以使用 \verbum*{mint}
+\footnote{注意：不是在行内显示代码，而是另起一段显示。}，如：
+\mintinline{text}!\mint{js}|message = "hello, world"|!。
+
+\subsection{\protect\verbum*{mintinline} 命令}
+
+可以使用 \verbum*{mintinline} 命令来在行内显示代码，如：
+\mintinline{text}!\mintinline{js}|message = "hello, world"|!。
+
+\subsection{\protect\verbum*{inputminted} 命令}
+
+显示代码文件，文件路径为相对于主文件的路径:
+
+%\begin{texcode}
+\inputminted{c}{../examples/codelistings/helloworld.c}
+%\end{texcode}
+
+\subsection{\protect\verbum{listing} 环境}
+
+minted 提供 \verbum{listing} 环境来作为一个浮动体来包裹代码。
+
+%\begin{texcode}
+\begin{listing}[H]
+  \caption{hello.c文件}
+  \inputminted{c}{../examples/codelistings/helloworld.c}
+\end{listing}
+%\end{texcode}
+
+\subsection{Troubleshooting}
+
+\subsubsection{在设置 \protect\verbum{bgcolor} 后 \protect\verbum*{mintinline} 不换行}
+
+在设置 \verbum{bgcolor} 后，对于较长的一行代码使用 \verbum*{mintinline} 时不换行，
+见 StackOverflow
+\footnote{\url{https://tex.stackexchange.com/questions/9097/background-colour-with-minted-package-code-misplaced}}
+\footnote{\url{https://tex.stackexchange.com/questions/419934/breaklines-doesnt-work-with-mintinline}}
+和 GitHub
+\footnote{\url{https://github.com/gpoore/minted/issues/194}}。
+
+The documentation mentions this as a limitation of bgcolor. The standard ways to put a background behind inline text don't work with line wrapping.
+
+The documentation reads:
+
+\begin{quote}
+  Automatic line breaks are limited with Pygments styles that use a colored background behind large chunks of text. This coloring is accomplished with \verbum*{color},
+  which cannot break across lines. It may be possible to create an alternative to
+  \verbum*{color} that supports line breaks, perhaps with TikZ, but the author is unaware
+  of a satisfactory solution. The only current alternative is to redefine \verbum*{color} so
+  that it does nothing. 
+\end{quote}
+
+\subsubsection{代码的换页}
+
+见 StackOverflow
+\footnote{\url{https://tex.stackexchange.com/questions/368864/pagebreak-for-minted-in-figure}}
+\footnote{\url{https://tex.stackexchange.com/questions/12428/code-spanning-over-two-pages-with-minted-inside-listing-with-caption/53540}}
+。
+
+\subsubsection{一些字符出现红色方框}
+
+见 StackOverflow
+\footnote{\url{https://tex.stackexchange.com/questions/343494/minted-red-box-around-greek-characters}}
+\footnote{\url{https://tex.stackexchange.com/questions/424421/code-validation-in-minted-package-how-to-disable-it}}
+。
+
+解决方法，使用下面的风格：
+xcode，igor，rrt。
+
+\section{\protect\verbum{texcode} 环境与 \protect\verbum*{inputlatexcode} 命令}
+
+为了显示{\LaTeX}代码和现实渲染结果
+\footnote{tcolorbox 包的 \verbum{tcblisting} 环境 和 showexpl 包也提供相关功能。}，可以采用：
+\begin{itemize}
+  \item \verbum{texcode} 环境：工作过程是将代码输出到文件，读取并渲染该文件
+  \item \verbum*{inputlatexcode} 命令：直接读取并渲染该文件
+\end{itemize}
+
+上述命令和环境在内部都调用了 \verbum*{inputminted} 命令。
+
+\subsection{\protect\verbum{texcode} 环境}
+
+基本形式：
+
+\begin{minted}{latex}
+%\begin{texcode}[<options>]
+<Latex code>
+%\end{texcode}
+\end{minted}
+
+\verbum{<options>} 包含分隔线颜色，\verbum*{inputminted} 命令的参数选项，默认值是：
+\verbum{[color=teal, mint=\{\}]}。当不需要分割线时，设置选项为 \verbum{[color=\{\}]}。
+
+显示并渲染代码示例：
+
+\begin{minted}{tex}
+%\begin{texcode}[color=magenta,mint={breaklines,linenos,bgcolor=green}]
+A common form of \textit{Lorem ipsum} reads:
+
+\begin{quotation}
+{\itshape Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.}
+\end{quotation}
+%\end{texcode}
+\end{minted}
+
+%\begin{texcode}[color=magenta,mint={breaklines,linenos,bgcolor=green}]
+A common form of \textit{Lorem ipsum} reads:
+
+\begin{quotation}
+{\itshape Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.}
+\end{quotation}
+%\end{texcode}
+
+
+\subsection{\protect\verbum*{inputlatexcode} 命令}
+显示并渲染代码文件，基本形式：
+
+\begin{minted}{latex}
+\inputlatexcode[<options>]{<file path>}
+\end{minted}
+
+\verbum{<options>} 的使用方法与 \verbum{texcode} 环境相同。
+
+\section{使用 \protect\verbum*{detokenize} 命令}
+
+在 StackOverflow
+\footnote{\url{https://tex.stackexchange.com/questions/128399/print-small-tex-code-verbatim-and-render-it}}
+上有如下的示例：
+
+%\begin{texcode}
+\newcommand\showcase[1]{{\ttfamily\detokenize{#1}} & $#1$}
+\begin{tabular}{cc|cc}
+\showcase{x^{y}}      & \showcase{\hat{x}, \bar{x}} \\
+\showcase{x_{y}}      & \showcase{f\colon X \to Y} \\
+\showcase{x'}         & \showcase{\sqrt{x+2}} \\
+\showcase{x''_{2}}    & \showcase{2 < x \leq 4} \\
+\showcase{A^{1}_{2}}  & \showcase{\frac{a+b}{c+d}} \\
+\showcase{3\pi/4}     & \showcase{\int_{0}^{1} x^{2} \,dx} \\
+\showcase{x\in\Omega} & \showcase{A \cup B \subseteq C \cap D}
+\end{tabular}
+%\end{texcode}
+
+但是使用 \verbum*{ttfamily} 和 \verbum*{detokenize} 显示代码时，在处理空格和使用在标题中存在一些问题。
+
+
+\begin{latexcode}{}
+  dd
+\end{latexcode}

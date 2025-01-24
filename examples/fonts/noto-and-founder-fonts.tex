@@ -1,0 +1,198 @@
+\documentclass{ctexart}
+
+%\usepackage{compositor/fontset}
+\usepackage{xcolor}
+
+\newcommand{\entext}{Whereas recognition of the inherent dignity and of the equal and inalienable rights of all members of the human family is the foundation of freedom, justice and peace in the world.}
+
+\newcommand{\sctext}{鉴于对人类家庭所有成员的固有尊严及其平等的和不移的权利的承认，乃是世界自由、正义与和平的基础}
+
+\newcommand{\tctext}{鑑於對人類家庭所有成員的固有尊嚴及其平等的和不移的權利的承認，乃是世界自由、正義與和平的基礎}
+
+\newcommand{\fontpreview}[1]{
+  \textcolor{purple}{#1} \par
+  {\CJKfamily{#1} \sctext \par \tctext} \par}
+
+\newfontfamily\sansfont{SourceHanSansSC-Regular.otf}
+\newfontfamily\seriffont{SourceHanSerifSC-Regular.otf}
+\newfontfamily\monofont{SourceHanMono.ttc}
+
+\setmainfont{NotoSansSC-Regular.otf}
+\setCJKmainfont{NotoSansSC-Regular.otf}
+
+\setCJKfamilyfont{NotoSansSC-B}{NotoSansSC-Bold.otf}
+\setCJKfamilyfont{NotoSansSC-L}{NotoSansSC-Light.otf}
+\setCJKfamilyfont{NotoSansSC-M}{NotoSansSC-Medium.otf}
+\setCJKfamilyfont{NotoSansSC}{NotoSansSC-Regular.otf}
+\setCJKfamilyfont{NotoSerifSC-B}{NotoSerifSC-Bold.otf}
+\setCJKfamilyfont{NotoSerifSC-L}{NotoSerifSC-Light.otf}
+\setCJKfamilyfont{NotoSerifSC-M}{NotoSerifSC-Medium.otf}
+\setCJKfamilyfont{NotoSerifSC}{NotoSerifSC-Regular.otf}
+\setCJKfamilyfont{SourceHanMono}{SourceHanMono.ttc}
+\setCJKfamilyfont{SourceHanSans}{SourceHanSansSC-Regular.otf}
+\setCJKfamilyfont{SourceHanSerif}{SourceHanSerifSC-Regular.otf}
+
+\setCJKfamilyfont{方正等线-Bold}{方正等线_GBK-Bold.TTF}
+\setCJKfamilyfont{方正圆体-Light}{方正圆体_GBK-Light.TTF}
+\setCJKfamilyfont{方正等线-Light}{方正等线_GBK-Light.TTF}
+\setCJKfamilyfont{方正等线-Medium}{方正等线_GBK-Medium.TTF}
+\setCJKfamilyfont{方正圆体-Regular}{方正圆体_GBK-Regular.TTF}
+\setCJKfamilyfont{方正书宋}{方正书宋_GBK.TTF}
+\setCJKfamilyfont{方正仿宋}{方正仿宋_GBK.TTF}
+\setCJKfamilyfont{方正卡通}{方正卡通_GBK.TTF}
+\setCJKfamilyfont{方正启体}{方正启体_GBK.TTF}
+\setCJKfamilyfont{方正大黑}{方正大黑_GBK.TTF}
+\setCJKfamilyfont{方正宋黑}{方正宋黑_GBK.TTF}
+\setCJKfamilyfont{方正彩云}{方正彩云_GBK.TTF}
+\setCJKfamilyfont{方正楷体}{方正楷体_GBK.TTF}
+\setCJKfamilyfont{方正琥珀}{方正琥珀_GBK.TTF}
+\setCJKfamilyfont{方正章草}{方正章草_GBK.TTF}
+\setCJKfamilyfont{方正粗宋}{方正粗宋_GBK.TTF}
+\setCJKfamilyfont{方正行楷}{方正行楷_GBK.TTF}
+\setCJKfamilyfont{方正隶书}{方正隶书_GBK.TTF}
+\setCJKfamilyfont{方正隶二}{方正隶二_GBK.TTF}
+\setCJKfamilyfont{方正隶变}{方正隶变_GBK.TTF}
+\setCJKfamilyfont{方正魏碑}{方正魏碑_GBK.TTF}
+\setCJKfamilyfont{方正黄草}{方正黄草_GBK.TTF}
+\setCJKfamilyfont{方正黑体}{方正黑体_GBK.TTF}
+\setCJKfamilyfont{方正兰亭黑}{方正兰亭黑_GBK.TTF}
+\setCJKfamilyfont{方正小纂体}{方正小纂体_GBK.TTF}
+\setCJKfamilyfont{方正新楷体}{方正新楷体_GBK.TTF}
+\setCJKfamilyfont{方正榜书楷}{方正榜书楷_GBK.TTF}
+\setCJKfamilyfont{方正榜书行}{方正榜书行_GBK.TTF}
+\setCJKfamilyfont{方正瘦金书}{方正瘦金书_GBK.TTF}
+\setCJKfamilyfont{方正鲁迅体}{方正鲁迅体_GBK.TTF}
+\setCJKfamilyfont{方正米芾行书}{方正米芾行书.TTF}
+\setCJKfamilyfont{方正兰亭中黑}{方正兰亭中黑_GBK.TTF}
+\setCJKfamilyfont{方正兰亭准黑}{方正兰亭准黑_GBK.TTF}
+\setCJKfamilyfont{方正兰亭大黑}{方正兰亭大黑_GBK.TTF}
+\setCJKfamilyfont{方正兰亭特黑}{方正兰亭特黑_GBK.TTF}
+\setCJKfamilyfont{方正兰亭粗黑}{方正兰亭粗黑_GBK.TTF}
+\setCJKfamilyfont{方正兰亭纤黑}{方正兰亭纤黑_GBK.TTF}
+\setCJKfamilyfont{方正兰亭细黑}{方正兰亭细黑_GBK.TTF}
+\setCJKfamilyfont{方正北魏楷书}{方正北魏楷书_GBK.TTF}
+\setCJKfamilyfont{方正古镇欧楷}{方正古镇欧楷_GBK.TTF}
+\setCJKfamilyfont{方正启功行楷}{方正启功行楷_GBK.TTF}
+\setCJKfamilyfont{方正硬笔楷书}{方正硬笔楷书_GBK.TTF}
+\setCJKfamilyfont{方正硬笔行书}{方正硬笔行书_GBK.TTF}
+\setCJKfamilyfont{方正苏轼行书}{方正苏轼行书_GBK.TTF}
+\setCJKfamilyfont{方正铁筋隶书}{方正铁筋隶书_GBK.TTF}
+\setCJKfamilyfont{方正鲁迅行书}{方正鲁迅行书_GBK.TTF}
+\setCJKfamilyfont{方正文征明小楷}{方正文征明小楷.TTF}
+\setCJKfamilyfont{方正李阳冰篆书}{方正李阳冰篆书.TTF}
+\setCJKfamilyfont{方正王献之小楷}{方正王献之小楷.TTF}
+\setCJKfamilyfont{方正董其昌行书}{方正董其昌行书.TTF}
+\setCJKfamilyfont{方正褚遂良楷书}{方正褚遂良楷书.TTF}
+\setCJKfamilyfont{字酷堂匡山楷书}{字酷堂匡山楷书_GBK.TTF}
+\setCJKfamilyfont{字酷堂松雪行书}{字酷堂松雪行书_GBK.TTF}
+\setCJKfamilyfont{方正兰亭中粗黑}{方正兰亭中粗黑_GBK.TTF}
+\setCJKfamilyfont{方正兰亭超细黑}{方正兰亭超细黑_GBK.TTF}
+\setCJKfamilyfont{方正吴玉如行书}{方正吴玉如行书_GBK.TTF}
+\setCJKfamilyfont{方正文征明行草}{方正文征明行草_GBK.TTF}
+\setCJKfamilyfont{方正欧阳询楷书}{方正欧阳询楷书_GBK.TTF}
+\setCJKfamilyfont{方正王羲之行书}{方正王羲之行书_GBK.TTF}
+\setCJKfamilyfont{方正赵孟頫楷书}{方正赵孟頫楷书_GBK.TTF}
+\setCJKfamilyfont{方正赵孟頫行书}{方正赵孟頫行书_GBK.TTF}
+\setCJKfamilyfont{方正顾建平楷书}{方正顾建平楷书_GBK.TTF}
+\setCJKfamilyfont{方正顾建平行楷}{方正顾建平行楷_GBK.TTF}
+\setCJKfamilyfont{方正顾建平隶书}{方正顾建平隶书_GBK.TTF}
+\setCJKfamilyfont{方正颜真卿楷书}{方正颜真卿楷书_GBK.TTF}
+\setCJKfamilyfont{方正黄庭坚行书}{方正黄庭坚行书_GBK.TTF}
+\setCJKfamilyfont{方正教材规范楷体}{方正教材规范楷体_GBK.TTF}
+
+\begin{document}
+
+\section*{西文字体}
+
+  {\textcolor{purple}{Default font\ } \entext}
+
+  {\textcolor{purple}{Serif font\ } \seriffont \entext}
+
+  {\textcolor{purple}{Sans font\ } \sansfont \entext}
+
+  {\textcolor{purple}{Mono font\ } \monofont \entext}
+
+\section*{中文字体}
+
+  \fontpreview{NotoSansSC}
+  
+  \fontpreview{SourceHanSans}
+  
+  \fontpreview{NotoSerifSC}
+  
+  \fontpreview{SourceHanSerif}
+  
+  \fontpreview{SourceHanMono}
+  
+  \fontpreview{NotoSerifSC}
+
+  \fontpreview{方正等线-Bold}
+  \fontpreview{方正圆体-Light}
+  \fontpreview{方正等线-Light}
+  \fontpreview{方正等线-Medium}
+  \fontpreview{方正圆体-Regular}
+  \fontpreview{方正书宋}
+  \fontpreview{方正仿宋}
+  \fontpreview{方正卡通}
+  \fontpreview{方正启体}
+  \fontpreview{方正大黑}
+  \fontpreview{方正宋黑}
+  \fontpreview{方正彩云}
+  \fontpreview{方正楷体}
+  \fontpreview{方正琥珀}
+  \fontpreview{方正章草}
+  \fontpreview{方正粗宋}
+  \fontpreview{方正行楷}
+  \fontpreview{方正隶书}
+  \fontpreview{方正隶二}
+  \fontpreview{方正隶变}
+  \fontpreview{方正魏碑}
+  \fontpreview{方正黄草}
+  \fontpreview{方正黑体}
+  \fontpreview{方正兰亭黑}
+  \fontpreview{方正小纂体}
+  \fontpreview{方正新楷体}
+  \fontpreview{方正榜书楷}
+  \fontpreview{方正榜书行}
+  \fontpreview{方正瘦金书}
+  \fontpreview{方正鲁迅体}
+  \fontpreview{方正米芾行书}
+  \fontpreview{方正兰亭中黑}
+  \fontpreview{方正兰亭准黑}
+  \fontpreview{方正兰亭大黑}
+  \fontpreview{方正兰亭特黑}
+  \fontpreview{方正兰亭粗黑}
+  \fontpreview{方正兰亭纤黑}
+  \fontpreview{方正兰亭细黑}
+  \fontpreview{方正北魏楷书}
+  \fontpreview{方正古镇欧楷}
+  \fontpreview{方正启功行楷}
+  \fontpreview{方正硬笔楷书}
+  \fontpreview{方正硬笔行书}
+  \fontpreview{方正苏轼行书}
+  \fontpreview{方正铁筋隶书}
+  \fontpreview{方正鲁迅行书}
+  \fontpreview{方正文征明小楷}
+  \fontpreview{方正李阳冰篆书}
+  \fontpreview{方正王献之小楷}
+  \fontpreview{方正董其昌行书}
+  \fontpreview{方正褚遂良楷书}
+  \fontpreview{字酷堂匡山楷书}
+  \fontpreview{字酷堂松雪行书}
+  \fontpreview{方正兰亭中粗黑}
+  \fontpreview{方正兰亭超细黑}
+  \fontpreview{方正吴玉如行书}
+  \fontpreview{方正文征明行草}
+  \fontpreview{方正欧阳询楷书}
+  \fontpreview{方正王羲之行书}
+  \fontpreview{方正赵孟頫楷书}
+  \fontpreview{方正赵孟頫行书}
+  \fontpreview{方正顾建平楷书}
+  \fontpreview{方正顾建平行楷}
+  \fontpreview{方正顾建平隶书}
+  \fontpreview{方正颜真卿楷书}
+  \fontpreview{方正黄庭坚行书}
+  \fontpreview{方正教材规范楷体}
+  
+
+\end{document}

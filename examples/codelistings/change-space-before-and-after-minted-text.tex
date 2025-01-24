@@ -1,0 +1,50 @@
+% https://tex.stackexchange.com/questions/228058/how-to-space-before-and-after-a-minted-code-block-with-bgcolor
+% https://tex.stackexchange.com/questions/261242/how-to-put-space-before-and-after-an-inputminted-code-block-with-bgcolor
+% https://tex.stackexchange.com/questions/501608/modify-space-before-and-after-minted-text
+
+\documentclass{ctexart}
+\usepackage{minted}
+\usepackage{color}
+
+\definecolor{light-gray}{rgb}{0.9,0.9,0.9}
+\setminted{bgcolor=light-gray}  % this line causes the problem
+
+% 查看 minted 代码可知通过修改 medskip 的间隔大小可以实现
+\makeatletter
+\newlength{\minted@medskipamount}
+\setlength{\minted@medskipamount}{\medskipamount}
+\BeforeBeginEnvironment{minted}{\setlength{\medskipamount}{0pt}}
+\AfterEndEnvironment{minted}{\setlength{\medskipamount}{\minted@medskipamount}}
+\makeatother
+
+\setlength{\parskip}{0pt}
+\begin{document}
+
+Lorem ipsum dolor sit amet
+
+Lorem ipsum dolor sit amet
+
+\medskip
+
+Lorem ipsum dolor sit amet
+
+Lorem ipsum dolor sit amet
+
+\begin{minted}{c}
+int main() {
+  printf("hello, world");
+  return 0;
+}
+\end{minted}
+
+Lorem ipsum dolor sit amet
+
+Lorem ipsum dolor sit amet
+
+\begin{minted}{python}
+print("hello, world")
+\end{minted}
+
+Lorem ipsum dolor sit amet
+
+\end{document}

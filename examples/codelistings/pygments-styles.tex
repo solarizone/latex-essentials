@@ -1,0 +1,60 @@
+% Pygments styles: pygmentize -L style
+
+\begin{filecontents*}[overwrite]{sample.py}
+  # This is an example
+  from typing import Iterator
+  
+  class Math:
+    @staticmethod
+    def fib(n: int) -> Iterator[int]:
+      """Fibonacci series up to n."""
+      a, b = 0, 1
+      while a < n:
+        yield a
+        a, b = b, a + b
+  
+  result = sum(Math.fib(42))
+  print(f"The answer is {result}")
+\end{filecontents*}
+
+\documentclass{article}
+
+\usepackage{filecontents}
+\usepackage{xcolor}
+\usepackage{minted}
+\usepackage{pgffor}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
+
+\title{Pygments Styles}
+
+\begin{document}
+
+  \maketitle
+
+  \tableofcontents
+
+  \foreach \style/\bgcolor in {
+    default/lime!15,
+    github-dark/black!85,
+    nord/black!85,
+    monokai/black!85,
+    vim/black!85,
+    rrt/black!85,
+    xcode/lime!15
+  } {
+    \section*{\style}%不编号
+    \addcontentsline{toc}{section}{\style}%加入 toc
+    % inputminted 的 options 使用循环变量需要特殊处理, 见:
+    % https://tex.stackexchange.com/questions/127897/how-to-use-a-macro-inside-includegraphics-options
+    \edef\options{style=\style,bgcolor=\bgcolor,frame=single,xleftmargin=0em,xrightmargin=0em}
+    \expandafter\inputminted\expandafter[\options]{python}{sample.py}
+  }
+
+\end{document}

@@ -1,0 +1,43 @@
+% 不要再 \begin{} 和 \end{} 之后加注释, 会产生 FancyVerb Error
+% https://tex.stackexchange.com/questions/365528/stuff-following-minted-environment-causes-error
+
+\documentclass{ctexart}
+
+\usepackage[svgnames]{xcolor}
+\usepackage{tcolorbox}
+\tcbuselibrary{listings}
+\usepackage{../../codeblocks}
+%\usepackage{fancyvrb}
+
+\begin{document}
+
+\begin{minted}[linenos,bgcolor=teal]{python}
+print('hello,world')
+\end{minted}
+
+\begin{texcode}[color=red]
+{\ttfamily Hello, World}
+\end{texcode}
+
+\begin{texcode}[color=]
+{\ttfamily Hello, World}
+\end{texcode}
+
+\begin{latexcode}{colorbox}
+ddr gg % hello
+\end{latexcode}
+
+\begin{latexcode}{} 
+ddrr%hello
+\end{latexcode}
+  
+\begin{tcblisting}{}
+1+1=2%
+\end{tcblisting}
+
+\begin{tcblisting}{colback=red!5!white,colframe=red!75!black}
+This is a \LaTeX\ example which displays the text as source code
+and in compiled form.
+\end{tcblisting}
+
+\end{document}

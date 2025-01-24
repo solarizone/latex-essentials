@@ -1,0 +1,26 @@
+% https://tex.stackexchange.com/questions/37792/write-environment-body-verbatim-to-a-file
+
+\documentclass{article}
+\usepackage{fancyvrb}
+\usepackage{minted}
+\usepackage{tikz}
+
+\newenvironment{latexcode}
+  {\typeout{Writing file \jobname.listing}\VerbatimOut{\jobname.listing}}
+  {\endVerbatimOut\inputminted{latex}{\jobname.listing}\input{\jobname.listing}}
+
+\begin{document}
+
+\section{Line}
+
+\begin{latexcode}
+\tikz \draw (0,0) -- (1,1);
+\end{latexcode}
+
+\section{Circle}
+
+\begin{latexcode}
+\tikz \draw (0,0) circle (1);
+\end{latexcode}
+
+\end{document}

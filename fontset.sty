@@ -1,29 +1,33 @@
-% 下载方正 GBK 字体(含简体和繁体中文)
-% https://www.foundertype.com/index.php/FindFont/index
-% https://chinesefonts.org/fonts/
-% https://www.fonts.net.cn/
-% https://lets.fontworks.co.jp/
-
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{fontset}[2023/01/01 v1.0 a latex template]
+\ProvidesPackage{fontset}[2024/11/29 v1.0 Chinese fonts settings]
 
 % 中文排版, 可以直接使用 ctexart, ctexbook
 % \RequirePackage[UTF8]{ctex}   
 
-% [Deprecated] texlive 自带 Fandol 楷体, 该字库的"仓"误为"仑", 故不用.
-% \setCJKmainfont[
-%   BoldFont=FandolHei-Regular.otf,
-%   ItalicFont=FandolSong-Regular.otf,
-%   BoldItalicFont=FandolFang-Regular.otf
-% ]{FandolKai-Regular.otf}  
+% 西文字体设置使用 fontspec 宏包设置罗马字体族, 无衬线字体族和打字机字体族
+% \setmainfont[<options>][<font name>]
+% \setsnasfont[<options>][<font name>]
+% \setmonofont[<options>][<font name>]
+% 定义新的字体族:
+% \newfontfamily<command>[<options>][<font name>]
+
+% 中文字体设置使用 xeCJK 宏包 (ctex 宏包或 ctexart 等文档类会自动调用):
+% \setCJKmainfont[<options>][<font name>]
+% \setCJKsnasfont[<options>][<font name>]
+% \setCJKmonofont[<options>][<font name>]
+% 定义新的字体族:
+% \newCJKfontfamily<中文字体族>[<options>][<font name>]
+% 使用字体族:
+% {\CJKfamily{仿宋} 你好, 世界}
 
 % 中文默认字体 rffamily
 \setCJKmainfont[
   Extension      = .otf,
   UprightFont    = *-Regular,
+  % BoldFont       = *-Bold,
   BoldFont       = NotoSansSC-Regular,
   ItalicFont     = 方正楷体_GBK.TTF,
-  BoldItalicFont = 方正圆体_GBK-Regular.TTF
+  BoldItalicFont = 方正魏碑_GBK.TTF
 ]{NotoSerifSC}
 
 % 中文无衬线字体 sffamily
@@ -36,30 +40,29 @@
 ]{NotoSansSC}
 
 % 中文等宽字体 ttfamily
-\setCJKmonofont[
-  UprightFont    = 方正仿宋_GBK.TTF,
-  BoldFont       = 方正圆体_GBK-Bold.TTF,
-  ItalicFont     = 方正圆体_GBK-Light.TTF,
-  BoldItalicFont = 方正圆体_GBK-Regular.TTF
-]{方正仿宋_GBK.TTF}
+% \setCJKmonofont[
+%   BoldFont       = 方正隶书_GBK.TTF,
+%   ItalicFont     = 方正楷体_GBK.TTF,
+%   BoldItalicFont = 方正魏碑_GBK.TTF
+% ]{方正仿宋_GBK.TTF}
+\setCJKmonofont{SourceHanMono.ttc}
 
-\setCJKfamilyfont{圆体}{方正圆体_GBK-Regular.TTF}
+\setCJKfamilyfont{NotoSansSC}{NotoSansSC-Regular.otf}
+\newcommand{\notosanssc}{\CJKfamily{NotoSansSC}}
+\setCJKfamilyfont{NotoSerifSC}{NotoSerifSC-Regular.otf}
+\newcommand{\notoserifsc}{\CJKfamily{NotoSerifSC}}
+
+\setCJKfamilyfont{圆体}{方正圆体_GBK-Light.TTF}
+\setCJKfamilyfont{等线}{方正等线_GBK-Medium.TTF}
 \setCJKfamilyfont{仿宋}{方正仿宋_GBK.TTF}
 \setCJKfamilyfont{楷体}{方正楷体_GBK.TTF}
 \setCJKfamilyfont{隶书}{方正隶书_GBK.TTF}
 \setCJKfamilyfont{隶变}{方正隶变_GBK.TTF}
 \setCJKfamilyfont{魏碑}{方正魏碑_GBK.TTF}
 \setCJKfamilyfont{行楷}{方正行楷_GBK.TTF}
-%\setCJKfamilyfont{彩云}{方正彩云_GBK.TTF}
-%\setCJKfamilyfont{琥珀}{方正琥珀_GBK.TTF}
-%\setCJKfamilyfont{瘦金体}{方正瘦金书_GBK.TTF}
 \setCJKfamilyfont{北魏楷书}{方正北魏楷书_GBK.TTF}
 \setCJKfamilyfont{硬笔楷书}{方正硬笔楷书_GBK.TTF}
-%\setCJKfamilyfont{硬笔行书}{方正硬笔行书_GBK.TTF}
-\setCJKfamilyfont{NotoSansSC}{NotoSansSC-Regular.otf}
-\newcommand{\notosanssc}{\CJKfamily{NotoSansSC}}
-\setCJKfamilyfont{NotoSerifSC}{NotoSerifSC-Regular.otf}
-\newcommand{\notoserifsc}{\CJKfamily{NotoSerifSC}}
+\setCJKfamilyfont{硬笔行书}{方正硬笔行书_GBK.TTF}
 
 \AtBeginDocument{
   % setmainfont, setsansfont, setmonofont等
@@ -68,4 +71,12 @@
   %\setmainfont{Noto Sans} % texlive 2022 没有预装字体
 }
 
+% CJK 下的中文下划线, 波浪线, 加点等标记
 \RequirePackage{CJKfntef}  
+
+% 参考
+% 方正字体: https://www.foundertype.com/index.php/FindFont/index
+% Noto Fonts: https://github.com/notofonts/noto-cjk/releases
+% Source Han Mono: https://github.com/adobe-fonts/source-han-mono
+% Source Han Sans: https://github.com/adobe-fonts/source-han-sans
+% Source Han Serif: https://github.com/adobe-fonts/source-han-serif

@@ -5,14 +5,14 @@
 \usepackage{../codeblocks}
 
 \newcommand\chapter{}
-\title{{\LaTeX} workshop}
+\title{{\LaTeX} 数学公式}
 
 %\setmainfont{Arial}
 
 % input 搜索路径, 但是这个设置对 inputminted 不起作用
 % 因此在 inputminted 还有引用相对主文件的路径
 \makeatletter
-\def\input@path{{./snippets}}
+\def\input@path{{../snippets}}
 \makeatother 
 
 \makeindex[intoc]  % 创建索引
@@ -28,7 +28,7 @@
 \tableofcontents
 \cleardoublepage
 
-\input{chapters/latex-workshop.tex}
+\input{chapters/formulas.tex}
 
 \cleardoublepage
 \addtocontents{toc}{\bigskip}

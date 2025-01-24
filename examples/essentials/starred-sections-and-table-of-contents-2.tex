@@ -1,0 +1,22 @@
+% https://tex.stackexchange.com/questions/30122/generate-table-of-contents-when-section-sections-without-numbering-has-been
+\documentclass[12pt,a4paper]{article}
+
+\begin{document}
+
+\tableofcontents
+
+% The reason for using \numberline{} is to allow for the traditional numbered space in the table of contents. If you're not interested in this numeric alignment, then you can drop the \protect\numberline{}.
+\section*{Section 1}
+\addcontentsline{toc}{section}{\protect\numberline{}Section 1}%
+
+\subsection*{sub 1}
+\addcontentsline{toc}{subsection}{\protect\numberline{}sub 1}%
+
+dd
+
+\section*{Section 2}
+\addcontentsline{toc}{section}{\protect\numberline{}Section 2}%
+
+ddg
+
+\end{document}

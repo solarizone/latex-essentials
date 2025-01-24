@@ -1,0 +1,58 @@
+% https://tex.stackexchange.com/questions/51239/verbatim-in-environ-s-body
+
+\documentclass{article}
+
+\usepackage{newverbs}
+
+\newcommand{\mlw}[3]{}
+\newcommand{\mlwa}[3]{#1}
+\newcommand{\mlwb}[3]{#2}
+\newcommand{\mlwc}[3]{#3}
+
+\makeatletter
+\newcommand{\multichaps}{%
+    \begingroup
+    \expandafter\Collectverb\expandafter\@multichaps\expandafter
+}
+
+% The EOL character must be active to work with 'verbatim'.
+% By default it should produce a space.
+% This will break implicit paragraphs!
+\begingroup
+\catcode13=\active%
+\gdef\activenl{%
+    \catcode13=\active%
+    \let^^M\space%
+}%
+\endgroup%
+
+\newcommand{\@multichaps}[1]{%
+  \activenl
+  \let\mlw\mlwa
+  \scantokens{#1}%
+  \let\mlw\mlwb
+  \scantokens{#1}%
+  \let\mlw\mlwc
+  \scantokens{#1}%
+  \endgroup
+}
+\makeatother
+
+\begin{document}
+
+\multichaps=
+\section{Installation on \mlw{Mac}{Windows}{Linux}}
+Now it's time to test the system. Create a file
+test.tex with the follwoing content.
+\begin{verbatim}
+\documentclass{article}
+
+\begin{document}
+Hallo World!
+\end{document}
+\end{verbatim}
+Now open your \mlw{Terminal}{(Eingabeaufforderung)}{Terminal}
+and call \verb+pdflatex test+
+=
+
+\end{document}

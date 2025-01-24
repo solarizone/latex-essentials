@@ -1,0 +1,26 @@
+% https://tex.stackexchange.com/questions/30122/generate-table-of-contents-when-section-sections-without-numbering-has-been
+\documentclass[12pt,a4paper]{ctexart}
+\usepackage{../../compositor}
+
+\begin{document}
+
+\tableofcontents
+
+% \section*{Section 1}
+% \addcontentsline{toc}{section}{Section 1}%
+\nonumsection{Setion 1}
+
+\subsection*{sub 1}
+\addcontentsline{toc}{subsection}{sub 1}%
+
+\subsection*{sub 1}
+\addcontentsline{toc}{subsection}{sub 1}%
+
+dd
+
+\section{Section 2}
+\addcontentsline{toc}{section}{Section 2}%
+
+ddg
+
+\end{document}

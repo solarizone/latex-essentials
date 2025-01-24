@@ -1,0 +1,35 @@
+% https://tex.stackexchange.com/questions/517827/minted-and-tcolorbox-putting-code-in-the-title
+
+\documentclass{article}
+
+\usepackage[minted,most]{tcolorbox}
+
+\begin{document}
+  
+\begin{tcolorbox}[title=\textbf{echo 'hello, world'}]
+\begin{minted}{bash}
+hello, world
+\end{minted}
+\end{tcolorbox}
+
+\begin{tcolorbox}[title=\textbf{hello\_world.sh}]
+\begin{minted}{bash}
+#!/usr/bin/env bash
+echo 'hello, world'
+\end{minted}
+\end{tcolorbox}
+
+\begin{tcblisting}{notitle, 
+  listing and comment,
+  bicolor,
+  colback=black!75!white,
+  colbacklower=black!5!white,
+  top=0mm, middle=1mm,
+  overlay={\draw[line width=1.05mm, black!5!white, opacity=1] ([shift={(.5mm,1mm)}]frame.west)--([shift={(-.5mm,1mm)}]frame.east);},
+  comment={hello, world}, 
+  colupper=white,
+  fontlower=\ttfamily,}
+echo 'hello, world'
+\end{tcblisting}
+
+\end{document}

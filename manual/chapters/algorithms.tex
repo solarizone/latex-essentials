@@ -1,0 +1,58 @@
+\chapter{算法排版}
+
+{\LaTeX}中算法或伪代码的排版可以选择下面两种方案的一种
+\footnote{\url{https://www.overleaf.com/learn/latex/Algorithms}}:
+
+\begin{itemize}
+  \item 使用 algpseudocode 或 algcompatible 或 algorithmic包（三选一）排版算法主体部分，使用 algorithm 包设置算法标题
+  \item 使用 algorithm2e 包
+\end{itemize}
+
+注意：上述宏包不能同时使用，否则将产生很多错误和冲突。各宏包的主要功能
+\footnote{\url{https://tex.stackexchange.com/questions/229355/algorithm-algorithmic-algorithmicx-algorithm2e-algpseudocode-confused}}：
+\begin{description}
+  \item [algorithm] float wrapper for algorithms.
+  \item [algorithmic] first algorithm typesetting environment.
+  \item [algorithmicx] second algorithm typesetting environment.
+  \item [algpseudocode] layout for algorithmicx.
+  \item [algorithm2e] third algorithm typesetting environment.
+\end{description}
+
+\section{伪代码与 Pascal 代码风格的算法}
+
+在导言区加入:
+\begin{minted}{latex}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{algpascal}
+\end{minted}
+
+\inputlatexcode[color={}]{../examples/algorithms/euclidean-algorithm1.tex}
+
+\inputlatexcode[color={}]{../examples/algorithms/euclidean-algorithm2.tex}
+
+\begin{remark*}
+使用时注意以下问题:
+\begin{enumerate}
+  \item 算法排版, algorithm 与 tcolorbox 存在冲突, 即 \verbum{tcolorbox} 环境不能包含 \verbum{algorithm} 环境;
+  \item 当同时引入 algpseudocode 和 algpascal, 必须使用 \verbum*{aglanguage{pseudocode}} 或 
+  \verbum*{aglanguage{pascal}}, 否则不能正确解析数学公式.
+\end{enumerate}
+\end{remark*}
+
+\section{跨页显式算法}
+
+如果算法较长, 则需要分页显示, 有两种方法:
+\begin{enumerate}
+  \item \verbum*{agstore} 和 \verbum*{agrestore} 命令将算法分成几个部分
+  \item 自定义 \verbum{breakablealgorithm} 环境
+  \footnote{\url{https://tex.stackexchange.com/questions/33866/algorithm-tag-and-page-break}}
+\end{enumerate}
+
+\subsection{\protect\verbum*{algstore} 和 \protect\verbum*{algrestore} 命令}
+
+\inputlatexcode[color={}]{../examples/algorithms/breakable-algorithm1.tex}
+
+\subsection{\protect\verbum{breakablealgorithm} 环境}
+
+\inputlatexcode[color={}]{../examples/algorithms/breakable-algorithm2.tex}

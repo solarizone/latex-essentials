@@ -1,0 +1,83 @@
+\documentclass{ctexart}
+
+\usepackage{../../compositor}
+\usepackage{../../codeblocks}
+\usepackage{../../fontset}
+
+\title{显示 {\LaTeX} 代码和渲染结果}
+
+\begin{document}
+
+\maketitle
+
+\section{ texcode 环境 }
+
+texcode 环境可以使用可选的 key\-value 参数来指定分隔线颜色
+
+\subsection{默认颜色 teal}
+
+\begin{texcode}
+Lorem ipsum dolor sit amet\\
+$a^2 - b^2 = (a+b)(a-b)$ 
+\end{texcode}
+
+\subsection{分隔线颜色 [color=red]}
+
+\begin{texcode}[color=red]
+Lorem ipsum dolor sit amet\\
+$a^2 - b^2 = (a+b)(a-b)$ 
+\end{texcode}
+
+\subsection{无分隔线 color=\{\}}
+
+\begin{texcode}[color={}]
+Lorem ipsum dolor sit amet\\
+$a^2 - b^2 = (a+b)(a-b)$ 
+\end{texcode}
+
+\begin{texcode}[color=green,mint={breaklines,bgcolor=yellow}]
+  \textbf{Lorem Ipsum}
+
+  \textit{Lorem ipsum} is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.
+  
+  A common form of \textit{Lorem ipsum} reads:
+  
+  \begin{quotation}
+  {\itshape Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.}
+  \end{quotation}
+\end{texcode}
+
+\section{ latexcode 环境 }
+
+latexcode 环境的参数是 colorbox 或 nobox 
+由于 VerbatimOut 的限制， 这个环境的参数没有默认值
+
+\subsection{colorbox}
+
+\begin{latexcode}{colorbox}
+Lorem ipsum dolor sit amet\\
+$a^2 - b^2 = (a+b)(a-b)$ 
+\end{latexcode}
+
+\subsection{nobox}
+
+\begin{latexcode}{nobox}
+Lorem ipsum dolor sit amet\\
+$a^2 - b^2 = (a+b)(a-b)$ 
+\end{latexcode}
+
+\section{\protect\verbum*{inputlatexcode}命令}
+
+\subsection{设置分隔线颜色 \protect\verbum{[color=cyan]}}
+
+\inputlatexcode[color=cyan]{pythagorean-theorem}
+
+\subsection{无分隔线 \protect\verbum{[color=\{\}]}}
+
+\inputlatexcode[color={}]{pythagorean-theorem}
+
+\subsection{设置 minted 参数 \protect\verbum{[mint=\{linenos\}]}}
+
+%\inputlatexcode[mint={linenos,bgcolor=cyan}]{lorem-ipsum.tex}
+
+\end{document}

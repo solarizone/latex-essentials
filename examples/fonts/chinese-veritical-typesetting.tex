@@ -1,0 +1,31 @@
+% https://tex.stackexchange.com/questions/38577/vertical-chinese-text-with-xetex
+% https://tex.stackexchange.com/questions/669085/overstriking-cjk-characters-with-traditional-chinese-tone-marks-in-xecjk
+
+\documentclass{ctexart}
+
+\usepackage{graphicx} % for \rotatebox
+\usepackage{../../fontset}
+
+\setCJKfamilyfont{竖排}[Scale=MatchLowercase,Mapping=tex-text,RawFeature={vertical}]{NotoSerifSC-Regular.otf}
+
+\begin{document}
+
+
+{\CJKfamily{竖排}
+Whereas recognition of the inherent dignity and of the equal and inalienable rights of all members of the human family is the foundation of freedom, justice and peace in the world.
+
+鉴于对人类家庭所有成员的固有尊严及其平等的和不移的权利的承认，乃是世界自由、正义与和平的基础。
+}
+
+\begin{center}
+  \rotatebox{-90}{
+    \fbox{
+      \begin{minipage}{10em}
+        \CJKfamily{竖排}
+          鉴于对人类家庭所有成员的固有尊严及其平等的和不移的权利的承认，乃是世界自由、正义与和平的基础。
+      \end{minipage}
+    }
+  }
+\end{center}
+
+\end{document}

@@ -1,0 +1,55 @@
+\chapter{Troubleshooting}
+
+\section{url地址中的 \# 符号}
+
+url 地址中 \# 符号需要 使用 \verb|\#|
+
+例如，应该将
+
+\mintinline{latex}|\url{http://example.com/#fragment}|
+
+修改为
+
+\mintinline{latex}|\url{http://example.com/\#fragment}|
+
+\section{标题中的脚注或其它命令}
+
+出现错误：
+\mintinline{latex}|! Argument of \@sect has an extra }.|
+
+参考: 
+
+\url{https://texfaq.org/FAQ-extrabrace}
+
+\url{https://texfaq.org/FAQ-ftnsect}
+
+Use a robust command in place of the one you are using, or to force your command to be robust by prefixing it with \verbum*{protect}.
+
+或者 
+
+\mint{latex}{\section[<toc-title>]{<title>}}
+
+在 \verbum{<toc-title>} 中不要含有命令。
+
+
+
+convert n*01.pdf image.png
+convert: unable to load module '/usr/local/Cellar/imagemagick/7.1.0-30/lib/ImageMagick/modules-Q16HDRI/coders/pdf.la': file not found @ error/module.c/OpenModule/1287.
+convert: no decode delegate for this image format `PDF' @ error/constitute.c/ReadImage/737.
+convert: no images defined `image.png' @ error/convert.c/ConvertImageCommand/3325.
+
+macOS bottled 可能缺少文件
+
+brew install imagemagick --build-from source
+
+
+\section{}
+Package catchfile: File `"xxx".w18' not found.
+
+minted package problem
+
+1. 可能由于 python 升级后缺少 pygments
+pip install pygments
+
+2. 文件名不能有空格
+

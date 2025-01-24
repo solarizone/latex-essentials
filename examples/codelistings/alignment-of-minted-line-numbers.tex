@@ -1,0 +1,31 @@
+% https://tex.stackexchange.com/questions/252263/alignment-of-minted-line-numbers
+
+\documentclass[10pt]{article}
+
+\usepackage{minted,lipsum}
+
+\begin{document}
+
+  \lipsum[1]
+
+  \begin{minted}[%xleftmargin=\parindent,
+    linenos,breaklines]{text}
+  Donec vehicula augue eu neque.
+  Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
+  Mauris ut leo.
+  Cras viverra metus rhoncus sem.
+  Nulla et lectus vestibulum urna fringilla ultrices.
+  \end{minted}
+
+  \begin{minted}[xleftmargin=\parindent,
+    linenos,breaklines]{text}
+  Donec vehicula augue eu neque.
+  Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
+  Mauris ut leo.
+  Cras viverra metus rhoncus sem.
+  Nulla et lectus vestibulum urna fringilla ultrices.
+  \end{minted}
+
+  \lipsum[2]
+
+\end{document}

@@ -1,0 +1,118 @@
+\chapter{数学公式}
+
+\section{Inline 公式}
+
+由于输入便捷, \mintinline{text}{$...$} 更受到欢迎.
+
+\subsection{\protect\verbum{math} 环境}
+
+使用 \mintinline{text}{math} 环境：
+
+\inputlatexcode{../examples/formulas/inline-quad1.tex}
+
+\subsection{\protect\verbum*{(}...\protect\verbum*{)} 环境}
+
+使用 \mintinline{text}{\(...\)} 环境：
+
+\inputlatexcode{../examples/formulas/inline-quad2.tex}
+
+\subsection{\protect\verbum{\$}...\protect\verbum{\$} 环境}
+
+使用 \mintinline{text}{$...$} 环境：
+
+\inputlatexcode{../examples/formulas/inline-quad3.tex}
+
+\section{Displayed 公式}
+
+推荐使用 \mintinline{text}{\[...\]}, 在处理间距更好一些.
+
+\subsection{\protect\verbum{displaymath} 环境}
+
+使用 \mintinline{text}{displaymath} 环境：
+
+\inputlatexcode{../examples/formulas/displayed-quad1.tex}
+
+\subsection{\protect\verbum*{[}...\protect\verbum*{]} 环境}
+
+使用 \mintinline{text}{\[...\]} 环境：
+
+\inputlatexcode{../examples/formulas/displayed-quad2.tex}
+
+\subsection{\protect\verbum{\$\$}...\protect\verbum{\$\$} 环境}
+
+使用 \mintinline{text}{$$...$$} 环境：
+
+\inputlatexcode{../examples/formulas/displayed-quad3.tex}
+
+\section{自动编号: \protect\verbum{equation} 环境}
+
+\mintinline{text}{equantion，align} 等环境默认是自动编号的，如果不需要编号则使用 \mintinline{text}{equation*，align*} 等环境。
+对应多行公式内容，如果不需要编号则使用 \mintinline{text}{\\notag}。
+
+\inputlatexcode{../examples/formulas/numbering-equations.tex}
+
+\section{多行公式}
+
+\subsection{\protect\verbum{multline} 环境}
+
+\inputlatexcode{../examples/formulas/amsmath-multline.tex}
+
+\subsection{\protect\verbum{gather} 环境}
+
+\inputlatexcode{../examples/formulas/amsmath-gather.tex}
+
+\subsection{\protect\verbum{align} 环境}
+
+\inputlatexcode{../examples/formulas/amsmath-align.tex}
+
+\subsection{\protect\verbum{split} 环境}
+
+\inputlatexcode{../examples/formulas/amsmath-split.tex}
+
+\subsection{\protect\verbum{flalign} 环境}
+
+\inputlatexcode{../examples/formulas/amsmath-flalign.tex}
+
+\subsection{\protect\verbum{alignat} 环境}
+
+\inputlatexcode{../examples/formulas/amsmath-alignat.tex}
+
+\inputlatexcode{../examples/formulas/amsmath-alignat-text.tex}
+
+注意: \mintinline{text}{&&}实际上是\mintinline{text}{& &}。 这里增加了一列水平间距，使得文字能够左对齐。
+
+\subsection{\protect\verbum{algined}、\protect\verbum{gathered} 和 \protect\verbum{alignedat} 环境}
+
+Used for an aligned block within a math environment. This can be displayed math or in-line math.
+
+\inputlatexcode{../examples/formulas/amsmath-aligned.tex}
+
+\section{文本}
+
+To insert some text into a formula, standard LaTeX provides the \mintinline{text}{\mbox} command. 
+amsmath offers further commands:
+
+\begin{description}
+  \item \mintinline{text}{\text{words}}: inserts text within a math formula. The size is adjusted according to the current math style, that is, \mintinline{text}{\text} produces smaller text within subscripts or superscripts.
+  \item \mintinline{text}{\intertext{text}}: suspends the formula, the text follows in a separate paragraph, then the multi-line formula is resumed, keeping the alignment. Use it for longer text.
+\end{description}
+
+\inputlatexcode{../examples/formulas/intertext.tex}
+
+\section{Cases}
+
+\inputlatexcode{../examples/formulas/cases-left.tex}
+
+\mintinline{text}{rcase} 是自定义的环境：
+
+\begin{minted}{latex}
+\newenvironment{rcase}
+  {\left.\begin{aligned}}
+  {\end{aligned}\right\rbrace}
+\end{minted}
+
+\inputlatexcode{../examples/formulas/cases-right.tex}
+
+\begin{remark*}
+\mintinline{text}{\,} Include a thin space in math mode.
+\end{remark*}
