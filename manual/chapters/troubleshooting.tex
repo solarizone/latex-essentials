@@ -43,7 +43,7 @@ macOS bottled 可能缺少文件
 brew install imagemagick --build-from source
 
 
-\section{}
+\section{Package catchfile: File `"xxx".w18' not found.}
 Package catchfile: File `"xxx".w18' not found.
 
 minted package problem
@@ -53,3 +53,21 @@ pip install pygments
 
 2. 文件名不能有空格
 
+
+\section{fourier 包与 xdvipdfmx: Command for 'xdvipdfmx' gave return code 34304}
+
+在 LaTeX 2024 编译时出现:
+
+\begin{minted}{text}
+------------
+Running 'xdvipdfmx -E -o "chapter-installation.pdf"  "chapter-installation.xdv"'
+------------
+chapter-installation.xdv -> chapter-installation.pdf
+[1][2
+xdvipdfmx:warning: Object @page.1 already defined.
+][3xdvipdfmx: ../../../texk/dvipdfm-x/pst_obj.c:770: pst_string_release: Assertion `obj' failed.
+Aborted
+Latexmk: Errors, so I did not complete making targets
+Collected error summary (may duplicate other messages):
+  xdvipdfmx: Command for 'xdvipdfmx' gave return code 34304
+\end{minted}

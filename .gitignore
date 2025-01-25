@@ -288,3 +288,7 @@ svg-inkscape/
 *.mul
 
 .DS_Store
+
+# minted on Linux
+*.minted
+_minted/
