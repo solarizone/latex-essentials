@@ -1,0 +1,419 @@
+\chapter{{\LaTeX 编程}}
+
+\section{宏、命令与环境}
+
+\subsection{def vs edef}
+
+这是 plain {\TeX} 定义宏的命令。
+
+def和edef都可以定义宏，其区别是：def定义宏时，其宏体不做展开操作；而edef定义宏时，其宏体需要进行展开操作，直到不能再展开为止。def定义的宏，在实际调用时才进行展开，因此宏定义时可以引用还没有定义的其他的宏；edef定义宏时，由于马上就进行展开操作，因此不能引用还没有定义的宏。无论def定义的宏还是edef定义的宏，在实际调用时都会进行“彻底”的展开操作。
+
+\subsection{命令与环境}
+
+本节内容来自：\url{https://latex.org/forum/viewtopic.php?t=26184}。
+
+{\LaTeX} is a macro language, meaning it is based on macros and you can easily define new macros. The word macro is mainly used for new user commands. On the other hand, macros defined by the kernel or packages are called commands. It is just a strange naming convention.
+You can also call them control sequences, as well. Internally, a lot of stuff is going on using the internal \verbum{csname}, \verbum{cs} standing for \textit{control sequence}.
+
+What are environments then? The usual command to define an environment is:
+
+\begin{minted}{latex}
+\newenvironment{area}{
+  <code beginning the environment>
+}{
+  <code ending the environment>
+}
+\end{minted}
+
+To put it in a nutshell, this defines a comman/macro/controlsequence 
+
+\mint{latex}|\newcommand{\area}{<code beginning the environment>}|
+
+and a macro 
+
+\mint{latex}|\newcommand{\endmacro}{<code to end the environment>}|
+
+Of course, this is very simplified and not the real internal code. There is also more going on in the background, for example the test if the environment is already defined and a lot more.
+
+{\LaTeXe} provides \verbum*{newcommand} and \verbum*{newenvironment} in different variations, 
+{\TeX} uses \verbum*{def} which is low level and shouldn't be used without care and experience.
+The {\LaTeX3} kernel, that is in development for the last 20 years, provides package xparse, 
+that you can use with the current version of {\LaTeX}. It provides very powerful extensions and tests and is really worth a look.
+
+\subsection{Difference between classes and packages}
+
+本节内容来自：\url{https://www.overleaf.com/learn/latex/Understanding_packages_and_class_files}
+
+其它参考 StackOverflow
+\footnote{\url{https://tex.stackexchange.com/questions/1050/whats-the-difference-between-newcommand-and-newcommand}}
+\footnote{\url{https://tex.stackexchange.com/questions/86449/what-is-the-difference-between-newenvironment-and-newenvironment}}
+。
+
+The default formatting in {\LaTeX} documents is determined by the class used by that document. 
+This default look can be changed and more functionalities can be added by means of a package. 
+The class file names have the \textit{.cls} extension, the package file names have the \textit{.sty} extension.
+
+Sometimes it's hard to make a decision when it comes to choose whether to write a package or a class. 
+The basic rule is that if your file contains commands that control the look of the logical structure of a special type of document, then it's a class. 
+Otherwise, if your file adds features that are independent of the document type, i.e. can be used in books, reports, articles and so on; then it's a package.
+
+For instance, if a company needs branded reports that use a special font and have the logo of the company in the footer; you need a new class.
+
+If the company needs a new command that makes easier to highlight important sentences within a document, a new package will work in this scenario.
+
+\section{创建命令 \protect\verbum*{newcommand}}
+
+基本形式：
+
+\mint{latex}|\newcommand{<命令名>}[<参数个数>][<第一个参数的默认值>]{<定义>}|
+
+\verbum*{newcommand} 有如下的三种使用方式：
+
+\subsection{定义无参数的命令}
+
+这是 \verbum*{newcommand} 最简单的使用方式，比如：
+
+\begin{texcode}
+\newcommand\lipsum{Lorem ipsum dolor sit amet}
+A common form of Lorem ipsum reads: \lipsum ...
+\end{texcode}
+
+当然，\verbum{<定义>}部分可以是一段代码，需要使用 \mintinline{latex}{\begin{group} ... \end{group}} 
+或 \verbum{\{\}}来包含这段代码。
+
+\subsection{定义有参数的命令}
+
+定义有参数命令的通用形式为：
+
+\mint{latex}|\newcommand{<命令名>}[<参数个数>]{<定义>}|
+
+方括号中定义了命令的参数个数（最多9个），在命令的定义中，可以使用 \#1 引用第一个参数，\#2 引用第二个参数，以此类推，比如：
+
+\begin{texcode}
+\newcommand\pyth[3]{\ensuremath{#1^2 + #2^2 = #3^2}}
+在平面几何中, 勾股定理是指一个直角三角形的三边满足公式: \pyth{a}{b}{c}.
+\end{texcode}
+
+\subsection{定义带默认值参数的命令}
+
+在定义带参数的命令时，{\LaTeX} 也允许其中的一个参数有默认值，即在调用命令时可以不给出这个参数，直接取用该参数的默认值。这个带默认值的参数，在LaTeX中永远使用 \#1 来引用。
+定义带默认值参数的命令的通用形式为： 
+
+\mint{latex}|\newcommand{<命令名>}[<参数个数>][<第一个参数的默认值>]{<定义>}|
+
+需要特别注意的是，当调用这个命令时，使用 \verbum{\{\}} 形式给出的参数列表要比定义命令时少一个，
+即带默认值的参数不能以 \verbum{\{\}} 的形式给出。
+要么使用参数的默认值，这样就不需要给出 \#1 这个参数；
+要么使用 \verbum{[]} 在其他参数前面重新定义默认值。 
+显然，带默认值参数的命令，至少有一个参数。 
+下面是一个具有一个参数且有默认值的命令：
+
+\inputlatexcode{snippets/programming/command-with-optional-parameters.tex}
+
+\subsection{\protect\verbum*{makeatletter} 和 \protect\verbum*{makeatother}}
+
+有编程经验的人很容易写出下面的代码：
+
+\begin{minted}{latex}
+\newcommand\str1{Lorem ipsum dolor sit amet}
+\newcommand\str2{consectetur adipiscing elit}
+\end{minted}
+
+当这段代码出现在导言区时，会出现错误：\mintinline{latex}{LaTeX Error: Missing \begin{document}}；
+当出现在 \verbum{document} 环境内部时，定义无效但不会报错。
+
+{\LaTeX} 的命令和 {\TeX} 的命令一样，
+只允许普通字符（26个字母的大小写形式）作为命令的名称，
+不允许出现数字、特殊字符等。当然，这不是一个不可逾越的鸿沟。
+本质上来说，只要 catcode=11 的字符都可以作为命令的名称，
+因此只要修改字符的 catcode 为11，这个字符就可以出现在命令的名称中。
+LaTeX的内部命令中，\verbum*{makeatletter} 命令的实质就是修改字符@的catcode为11，
+这样@就可以出现在命令名称中了。\verbum*{makeatother} 重新修改@的catcode为12，
+不允许@出现在命令的名字中。
+
+\section{创建环境 \protect\verbum*{newenvironment}}
+
+\subsection{基本用法}
+
+定义环境的一般形式：
+
+\mint{latex}|\newenvironment{<环境名>}[<参数个数>][<第一个参数的默认值>]{<环境前定义>}{<环境后定义>}|
+
+其中：
+\begin{itemize}
+  \item \verbum{<环境前定义>}中的代码在环境开始时执行，也即 \mintinline{latex}{\begin{<环境名>}} 时执行。在这段代码中，你能够使用参数，与命令定义类似。
+  \item \verbum{<环境后定义>}中的代码在环境结束时执行，也即 \mintinline{latex}{\end{<环境名>}} 时执行。在这段代码中，你不能使用参数，解决方法见下文。
+\end{itemize}
+
+下面的代码将产生错误： \mintinline{latex}{Illegal parameter number in definition of \endnormaltext}。
+
+\begin{minted}{latex}
+\newenvironment{normaltext}[1][\itshape]%
+  {#1}%
+  {\typeout{what was #1, again?}}
+\end{minted}
+
+解法方法是将参数暂时保存：
+
+\begin{texcode}
+\newenvironment{normaltext}[1][Intro]%
+  {#1\par%
+   \newcommand{\foo}{#1}}%
+  {\par what was \foo, again?}
+
+\begin{normaltext}
+Lorem ipsum dolor sit amet
+\end{normaltext}
+\end{texcode}
+
+如何获取环境内容？解决方法：使用 envrion 包或者如 compositor 包中的 \verbum{texcode} 环境实现，先输出到文件，再读入该文件。
+
+\subsection{环境的编号}
+
+下面自定义一个定理环境
+\footnote{\url{https://www.overleaf.com/learn/latex/Environments}}
+\footnote{\url{https://www.overleaf.com/learn/latex/Counters}}：
+
+\begin{texcode}
+\newcounter{theorema}[section]
+\counterwithin*{theorema}{section}
+\newenvironment{theorema}[1][]{\refstepcounter{theorema}\par\medskip
+    \noindent \textbf{定理~\thesection.\thetheorema. #1} \rmfamily}{\medskip}
+
+\begin{theorema}[勾股定理]
+直角三角形的两条直角边的平方和等于斜边的平方
+\end{theorema}
+
+\begin{theorema}
+两条直线被第三条直线所截，如果内错角相等，那么这两条直线平行。
+\end{theorema}
+\end{texcode}
+
+\section{创建宏包}
+
+参考 \cite{CLSGUIDE}、\cite{WIKIBOOKS} 、\cite{COMPANION} 和 Overleaf 教程\footnote{\url{https://www.overleaf.com/learn/latex/Writing_your_own_package}}
+{\LaTeXe} 对选项 Options 的支持只是选择性， 如果需要键值对选项需要使用 kvoptions，或 xkeyval，或pgfkeys 包。
+
+\subsection{宏包的结构}
+
+The structure of all package files can be roughly described in the next four parts:
+
+\begin{description}
+  \item[Identification] The file declares itself as a package written with the {\LaTeXe} syntax.
+  \item[Preliminary declarations] Here the external packages needed are imported. Also, in this part of the file the commands and definitions needed by the declared options are coded.
+  \item[Options] The package declares and processes the options.
+  \item[More declarations] The main body of the package. Almost everything a package does is defined here.
+\end{description}
+
+In the next subsections a more detailed description of the structure and a working example will be presented.
+
+我们先看一个实例，在该实例中我们创建了一个名为 colorbox 的宏包，并且使用了 xkeyval 包来解析键值对参数：
+
+\inputminted{latex}{../examples/programming/create-packages.tex}
+
+\subsubsection{Identification}
+
+There are two simple commands that all packages must have:
+
+The command \mintinline{latex}|\NeedsTeXFormat{LaTeX2e}| sets the {\LaTeX} version for the package to work. 
+Additionally, a date can be added within brackets to specify the minimal release date required.
+
+The command \mintinline{latex}|\ProvidesPackage{<package name>}[...]| identifies this package as 
+\verbum{<package name>} and, inside the brackets, the release date and some additional information 
+is included. The date should be in the form YYYY/MM/DD.
+
+\subsubsection{Preliminary declarations}
+
+Most of the packages extend and customize existing ones, 
+and also need some external packages to work. Below, 
+some more code is added to the sample package.
+
+The commands in this part either initialize some parameters 
+that latter will be used to manage the options, 
+or import external files.
+
+The command \verbum*{RequirePackage} is very similar to the 
+well-known \verbum*{usepackage}, adding optional parameters 
+within brackets will also work. The only difference is that 
+the \verbum*{usepackage} can not be used before 
+\verbum*{documentclass} command. It's strongly recommended 
+to use \verbum*{RequirePackage} when writing new packages or 
+classes.
+
+\subsubsection{Options}
+
+To allow some flexibility in the packages a few additional 
+options are very useful. The next part in the file handles 
+the parameters passed to the package-importing statement.
+
+Below a description of the main commands that can handle the options passed to the package.
+
+The command \verbum*{DeclareOptionX} handles a given option. It takes two parameters, 
+the first one is the name of the option and the second one is the code to execute if the 
+option is passed.
+
+The command \verbum*{OptionNotUsed} will print a message in the compiler and the logs, t
+he option won't be used.
+
+The command \verbum*{Declareoption*} handles every option not explicitly defined. 
+It takes only one parameter, the code to execute when an unknown option is passed. 
+In this case it will print a warning by means of the next command:
+\verbum*{PackageWarning}. See handling errors for a description about what this command does.
+
+\verbum*{CurrentOption} stores the name of the package option being handled at a determined moment.
+
+The command \verbum*{ProcessOptionsX\relax} executes the code fore each option and must be 
+inserted after all the option-handling commands were typed. 
+There's a starred version of this command that will execute 
+the options in the exact order specified by the calling commands.
+
+In the example, if the options \verbum{fcolor} or \verbum{bgcolor} are passed to the \verbum*{usepackage}
+ command within the document, the command \verbum*{FrameColor} and \verbum*{BGColor} are redefined. 
+ Both colours and the default grey colour were defined in the preliminary declarations after importing the xcolor package.
+
+\subsubsection{More declarations}
+
+In this part most of the commands will appear. Below you can see the full package file.
+
+This package defines a new command \verbum*{textbox}, that prints the words in a special colour.
+
+To fully understand each command see the reference guide and the links in the further reading section.
+
+Below, a document that uses the package.
+
+\subsection{Handling errors}
+
+When it comes to develop new packages it's important to handle possible errors to let know the user that something went wrong. There are four main commands to report errors in the compiler.
+
+\mintinline{latex}|\PackageError{package-name}{error-text}{help-text}|. Takes three parameters, each one inside braces: the package name, the error text which is going to be displayed (the compilation process will be paused), and the help text that will be printed if the user press "h" when the compilation pauses because of the error.
+
+\mintinline{latex}|\PackageWarning{package-name}{warning-text}|. In this case the text is displayed but the compilation process won't stop. It will show the line number where the warning occurred.
+
+\mintinline{latex}|\PackageWarningNoLine{package-name}{warning-text}|. Works just like the previous command, but it won't show the line where the warning occurred.
+
+\mintinline{latex}|\PackageInfo{package-name}{info-text}|. In this case the information in the second parameter will only be printed in the transcript file, including the line number.
+
+\subsection{Reference guide}
+
+List of commands commonly used in packages and classes
+
+\mintinline{latex}|\newcommand{name}{definition}|. Defines a new command, the first parameter is the name of the new command, the second parameter is what the command will do.
+
+\mintinline{latex}|\renewcommand|. The same as \verbum*{newcommand} but will overite an existing command.
+
+\mintinline{latex}|\providecommand|. Works just as \verbum*{newcommand} but if the command is already defined this one will be silently ignored.
+
+\mintinline{latex}|\CheckCommand|. The syntax is the same as \verbum*{newcommand}, but instead it will check whether the command exists and has the expected definition, {\LaTeX} will show a warning if the command is now what \verbum*{CheckCommand} expected.
+
+\mintinline{latex}|\setlength|. Sets the length of the element passed as first parameter to the value written as second parameter.
+
+\section{创建文档类}
+
+参考 \cite{COMPANION} 和 Overleaf\footnote{\url{https://www.overleaf.com/learn/latex/Writing_your_own_class}}。
+
+与宏包结构类似，下面只列出代码，不做赘述：
+
+\inputminted{latex}{../examples/programming/create-class.tex}
+
+\section{key-value 参数}
+
+关于 key-value 参数的实现 请参考 Joseph Wright 和 Christian Feuersänger 的文章\cite{TUGBOAT2009}。
+
+\subsection{\protect\verbum*{define@key}}
+
+\mint{latex}|\define@key{<family>}{<key>}{<handler>}|
+
+\verbum*{define@key} 有三个参数：\verbum{<family>}，
+\verbum{<key>} 和 \verbum{<handler>}。
+
+\subsection{\protect\verbum*{setkeys}}
+
+\verbum*{setkeys} 用于设置 key-value。The input to \verbum*{setkeys} is a comma-separated list: each comma-separated \verbum{<key>=<value>} pair is therefore processed in turn. 
+
+\subsection{ keyval 包}
+
+下面的例子由 keyval 文档示例修改得到：
+
+\inputminted[linenos]{latex}{../examples/programming/keyval-command-with-parameters.tex}
+
+编译时在终端输出：
+
+\begin{minted}{text}
+Setting height (4 in)
+Setting width (5 in)
+Setting scale (.85)
+Setting bounding box (20 20 300 400)
+Setting clip (false)
+Lorem ipsum dolor sit amet
+Setting height (4 in)
+Setting width (5 in)
+Setting clip (true)
+Lorem ipsum dolor sit amet
+\end{minted}
+
+从上面的输出可以看出，当参数列表未包含的参数时不会调用相关的\verbum{<handler>}；
+对于有默认值的参数，可以不给值，但是需要列出该参数。
+
+为了使键值对参数时可选的，我们可以将值进行存储，如下例：
+
+\inputminted[linenos]{latex}{../examples/programming/keyval-command-with-optional-parameters1.tex}
+
+其中定义命令的方式也可以采用 \verbum{newcommand}：
+
+\inputminted[firstline=30,lastline=42]{latex}{../examples/programming/keyval-command-with-optional-parameters2.tex}
+
+关于键值对参数在自定义包和文档类中的使用见 keyval, xkeyval 和 kvoptions 包的文档。
+
+\subsection{xkeyval}
+
+\inputminted{latex}{../examples/programming/xkeyval-command-with-optional-parameters.tex}
+ 
+值得注意的是在创建宏包和文档类中使用 \verbum*{DeclareOptionX} 后面默认的 \verbum*{<family>}是宏包和类名，
+不能再指定其它名称，否则 \verbum*{ProcessOptionsX} 无法获得宏包和文档类的选项参数。
+详细使用方法请参考文档。
+
+\section{其它}
+
+\subsection{{\LaTeX} Hooks}
+
+{\LaTeX} Hooks 使我们能够控制代码执行的时机，常用的 Hooks 有：
+
+\begin{itemize}
+  \item \verbum*{AfterEndEnvironment}
+  \item \verbum*{AtBeginDocument}
+  \item \verbum*{AtBeginEnvironment}
+  \item \verbum*{AtEndDocument}
+  \item \verbum*{AtEndEnvironment}
+  \item \verbum*{AtEndPreamble}
+  \item \verbum*{BeforeBeginEnvironment}
+  \item \verbum*{AddToHook}
+\end{itemize}
+
+注意：
+\begin{minted}{latex}
+\AddToHook{cmd/mint/before}{This is the beginning of cmd}
+%\AddToHook{cmd/mint/after}{This causes error in cmd}
+\end{minted}
+
+AddToHook 在 cmd 之后会有问题: \url{https://tex.stackexchange.com/questions/682916/cannot-add-to-after-hook-of-sectioning-command}
+
+详细说明请参考文献 \cite{HOOKS}。
+
+\subsection{\protect\verbum*{expandafter}}
+
+compositor 宏包的 \verbum{texcode} 环境的实现使用了
+\verbum*{expandafter} 来控制展开顺序，从而实现了将外部命令的字符串参数注入内部命令。
+
+\section{\protect\verbum*{@ifstar}}
+
+参考文献 \cite{MANUAL}:
+
+\begin{minted}{latex}
+\newcommand{\cmdname}{\@ifstar{\cmdname@star}{\cmdname@nostar}}
+\newcommand{\cmdname@nostar}[<nostar-num-args>]{<nostar-body>} 
+\newcommand{\cmdname@star}[<star-num-args>]{<star-body>}
+\end{minted}
+
+Many standard {\LaTeX} environments or commands have a variant with the same name but ending with a star character *, an asterisk. Examples are the table and table* environments and the \verbum*{section} and \verbum*{section*} commands.
+
+When defining environments, following this pattern is straightforward because \verbum*{newenvironment} and \verbum*{renewenvironment} allow the environment name to contain a star. So you just have to write \verbum*{newenvironment\{envname\}} or \verbum*{newenvironment\{envname*\}} and continue the definition as usual. For commands the situation is more complex as the star not being a letter cannot be part of the command name. As in the synopsis above, there will be a user-called command, given above as \verbum*{cmdname}, which peeks ahead to see if it is followed by a star. For instance, LaTeX does not really have a \verbum*{section*} command; instead, the \verbum*{section} command peeks ahead. This command does not accept arguments but instead expands to one of two commands that do accept arguments. In the synopsis these two are \verbum*{cmdname@nostar} and \verbum*{cmdname@star}. They could take the same number of arguments or a different number, or no arguments at all. As always, in a LaTeX document a command using an at-sign @ in its name must be enclosed inside a \verbum*{makeatletter} ... \verbum*{makeatother} block.
